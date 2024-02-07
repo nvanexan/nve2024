@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import { jsx } from 'astro/jsx-runtime';
+import Layout from '../../layouts/Layout.astro';
+
+const changelogs = await getCollection('changelogs');
+
+---
+
+<Layout title="Changelog" description="Changelogs">
+  {
+    changelogs.map(async changelog => {
+      const { Content } = await changelog.render();
+
+
+      return (
+        <>
+          <h2><a href={`/changelog/${changelog.slug}`}>{changelog.data.title}</a></h2>
+          <Content />
+        </>
+      );
+    })
+  }
+</Layout>

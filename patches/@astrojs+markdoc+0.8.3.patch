@@ -1,0 +1,31 @@
+diff --git a/node_modules/@astrojs/markdoc/components/Renderer.astro b/node_modules/@astrojs/markdoc/components/Renderer.astro
+index 4b0dbb3..18ea9af 100644
+--- a/node_modules/@astrojs/markdoc/components/Renderer.astro
++++ b/node_modules/@astrojs/markdoc/components/Renderer.astro
+@@ -3,6 +3,8 @@
+ import type { Config } from '@markdoc/markdoc';
+ import Markdoc from '@markdoc/markdoc';
+ import { ComponentNode, createTreeNode } from './TreeNode.js';
++import { extendedNodes } from '@nvanexan/markdoc-extensions';
++import MarkdocExtendedParser from '@nvanexan/markdoc-extensions/dist/index.mjs';
+ 
+ type Props = {
+ 	config: Config;
+@@ -10,9 +12,16 @@ type Props = {
+ };
+ 
+ const { stringifiedAst, config } = Astro.props as Props;
++config.nodes = {
++  ...config.nodes,
++  ...extendedNodes,
++};
+ 
+ const ast = Markdoc.Ast.fromJSON(stringifiedAst);
+-const content = Markdoc.transform(ast, config);
++const parser = new MarkdocExtendedParser({footnotes: true, highlights: true});
++const result = parser.parse(ast);
++const content = Markdoc.transform(result, config);
++
+ ---
+ 
+ {

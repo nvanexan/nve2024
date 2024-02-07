@@ -1,0 +1,658 @@
+@font-face {
+  font-family: "Sohne";
+  src: url("/fonts/soehne-buch.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+
+:root {
+  --font-fallback: --apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  --font-sans: "Sohne", var(--font-fallback);
+  --font-display: "Helvetica", var(--font-fallback);
+  --font-serif: "Newsreader", "Signifier", "Times", serif;
+  --font-mono: "Menlo", monospace;
+  --default-gap: 0.5rem;
+  --gap-sm: 4px;
+  --gap: 8px;
+  --gap-2x: 16px;
+  --gap-3x: 24px;
+  --gap-4x: 32px;
+  --gap-8x: 64px;
+  --gap-16x: 128px;
+  --leading-2xl: 54px;
+  --leading-xl: 40px;
+  --leading-lg: 32px;
+  --leading: 28px;
+  --leading-sm: 22px;
+  --leading-xs: 18px;
+  --text-2xl: 30px;
+  --text-xl: 24px;
+  --text-lg: 20px;
+  --text: 16px;
+  --text-sm: 14px;
+  --text-xs: 12px;
+
+  --mobile: 768px;
+  --tablet: 1024px;
+  --content-width: 640px;
+  --page-left: auto;
+  --page-top: 192px;
+  --header-height: 48px;
+  --body-margin-left: max(24px, env(safe-area-inset-left));
+  --body-margin-right: max(24px, env(safe-area-inset-right));
+
+  --fg: var(--gray1);
+  --bg: #ffffff;
+  --alpha: hsla(0, 0%, 9%, 0.9);
+  --gray0: #111111;
+  --gray1: #161616;
+  --gray2: #1c1c1c;
+  --gray3: #232323;
+  --gray4: #282828;
+  --gray5: #2e2e2e;
+  --gray6: #343434;
+  --gray7: #3e3e3e;
+  --gray8: #505050;
+  --gray9: #707070;
+  --gray10: #7e7e7e;
+  --gray11: #a0a0a0;
+  --gray12: #ededed;
+  --grayA1: hsl(0 0% 100%/0);
+  --grayA2: hsl(0 0% 100%/0.026);
+  --grayA3: hsl(0 0% 100%/0.056);
+  --grayA4: hsl(0 0% 100%/0.077);
+  --grayA5: hsl(0 0% 100%/0.103);
+  --grayA6: hsl(0 0% 100%/0.129);
+  --grayA7: hsl(0 0% 100%/0.172);
+  --grayA8: hsl(0 0% 100%/0.249);
+  --grayA9: hsl(0 0% 100%/0.386);
+  --grayA10: hsl(0 0% 100%/0.446);
+  --grayA11: hsl(0 0% 100%/0.592);
+  --grayA12: hsl(0 0% 100%/0.923);
+
+  --blue: #4895f4;
+  --accent-blue: #a5d6ff;
+  --link: var(--gray9);
+
+  --spacer-y: 8;
+  --prism-bg: #fbfbfb;
+
+  --light-green: rgba(46, 160, 67, 0.15);
+  --highlight-bg: rgba(255, 216, 0, 0.2);
+  --border-color: var(--gray6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0d1117;
+    --fg: var(--gray12);
+    --prism-bg: #161b22;
+    --link: var(--gray11);
+    --blue: #4895f4;
+    --accent-blue: #a5d6ff;
+    --border-color: var(--gray6);
+  }
+
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --blue: #0969da;
+    --accent-blue: #2d4aae;
+    --border-color: var(--gray12);
+  }
+
+  .diagram.unimode path,
+  .diagram.unimode text {
+    stroke: white;
+  }
+
+  .diagram.unimode text {
+    fill: white;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-top: 64px;
+  }
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--fg);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: var(--body-margin-left);
+  margin-right: var(--body-margin-right);
+  overflow-x: hidden;
+}
+
+.app {
+  min-height: 75vh;
+  position: relative;
+  max-width: var(--content-width);
+  margin: 0 auto 0 var(--page-left);
+  background: var(--bg);
+  padding: var(--page-top) 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--fg);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: var(--text);
+  line-height: var(--leading);
+  font-family: var(--font-display);
+  font-feature-settings: "kern", "calt", "case";
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .post .heading::before {
+    content: "#";
+  }
+}
+
+h3 {
+  opacity: 0.8;
+}
+
+h4 {
+  opacity: 0.6;
+}
+
+h5,
+h6 {
+  opacity: 0.4;
+}
+
+.heading::before {
+  position: absolute;
+  transform: translateX(calc(-100% - 10px));
+  opacity: 0;
+  transition: all ease-in-out 0.2s;
+}
+
+.heading:hover:before {
+  opacity: 1;
+}
+
+s {
+  opacity: 0.3;
+}
+
+mark {
+  background: var(--highlight-bg);
+  color: var(--fg);
+}
+
+hr {
+  height: 0px;
+  border: none;
+  border-top: solid 1px var(--border-color);
+}
+
+em,
+blockquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  line-height: normal;
+  font-size: calc(1em + 2px);
+  color: var(--fg);
+}
+
+blockquote {
+  padding-left: var(--body-margin-left);
+  border-left: solid 3px;
+  margin: 0 0 28px;
+}
+
+blockquote p {
+  font-size: 1.1rem;
+}
+
+article > :where(h1, h2, h3, h4, h5, h6) {
+  margin-top: 56px;
+  margin-bottom: 32px;
+}
+
+article > :where(p, ul, ol, section) {
+  margin-bottom: 28px !important;
+}
+
+.content-heading,
+.article-title {
+  color: var(--fg);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: var(--text);
+  line-height: var(--leading);
+  font-family: var(--font-display);
+  font-feature-settings: "kern", "calt", "case";
+  margin: 0;
+}
+
+.article-summary {
+  color: var(--gray11);
+  margin: 0;
+}
+
+@media (min-width: 1100px) {
+  .article-footer {
+    margin-top: 48px;
+    padding-top: 48px;
+    border-top: solid 1px var(--border-color);
+  }
+}
+
+p,
+ul,
+.content-text {
+  color: var(--fg);
+  letter-spacing: 0;
+  font-size: var(--text);
+  line-height: var(--leading);
+  font-feature-settings: "kern", "frac", "kern", "ss02";
+  margin: 0;
+}
+
+.spacer {
+  display: block;
+  margin-top: calc(var(--default-gap) * var(--spacer-y, 1) - 1px);
+}
+
+.bookmarks ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.image-container,
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+}
+
+.image-container figcaption,
+.diagram figcaption {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.writing-section li em {
+  margin-left: 1rem;
+  font-size: 0.9em;
+}
+
+nve-diagram {
+  display: block;
+  margin: 4rem 0;
+}
+
+/* ---------------------------------- */
+
+ul {
+  list-style: none;
+  list-style-position: outside;
+  margin: 0 0 1rem 1rem;
+  padding: 0;
+}
+
+ul ul {
+  margin: 0 0 0 1rem;
+}
+
+ul li:before {
+  content: "–";
+  display: inline-block;
+  text-indent: calc(1rem * -1);
+}
+
+ol {
+  margin: 0;
+  padding: 0;
+  padding-left: 16px;
+  line-height: var(--leading);
+}
+
+ol li::marker {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+/* ---------------------------------- */
+
+.meta {
+  --side: 44px;
+  --page-margin: calc((100vw - var(--content-width)) / 2);
+  position: absolute;
+  right: calc(var(--content-width) + var(--side));
+  width: calc(var(--page-margin) - var(--side) - 48px);
+  max-width: 192px;
+  margin-bottom: 8rem;
+}
+
+.meta a {
+  color: var(--fg);
+  text-decoration: none;
+  background-image: none;
+}
+
+.meta p {
+  color: var(--gray11);
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .meta {
+    position: static;
+    width: unset;
+    left: unset;
+    right: unset;
+    max-width: unset;
+  }
+}
+
+.page-pubdate {
+  font-size: 12px;
+  opacity: 0.5;
+  margin-top: 5rem;
+  transition: opacity 1s ease-in-out;
+  display: none;
+}
+
+.page-pubdate:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------- */
+
+sup {
+  position: relative;
+  font-size: 12px;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
+  top: -3px;
+  line-height: 0;
+  color: var(--gray11);
+}
+
+sup a {
+  color: var(--gray11);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  background-image: none;
+}
+
+sup a:hover {
+  color: var(--fg);
+}
+
+.footnotes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: static;
+  width: unset;
+  left: unset;
+  right: unset;
+  max-width: unset;
+  border-top: solid 1px var(--border-color);
+  padding-top: 28px;
+  margin-top: var(--spacer-y);
+  opacity: 0;
+  counter-reset: item 0;
+  animation-duration: 1s;
+  animation-name: fadein;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+  animation-iteration-count: 1;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.footnotes li {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--mono9);
+  padding-bottom: 28px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  padding-left: 16px;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.footnotes li:hover {
+  opacity: 1;
+}
+
+.footnotes li:before {
+  content: counter(item) ". ";
+  counter-increment: item 1;
+  position: absolute;
+  vertical-align: super;
+  font-size: inherit;
+  font-weight: 700;
+  font-size: smaller;
+  transform: translate(-12px, 0px);
+}
+
+.footnotes li p {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--mono9);
+  display: inline;
+}
+
+.footnotes li a.footnote-anchor {
+  margin-left: 6px;
+  display: inline-block;
+  background-image: none;
+}
+
+/* ---------------------------------- */
+/* .footnotes-js class and styles are for overrides of default footnotes styles
+for situations where the user has JS enabled. We use !important overrides to
+override styles that are injected into html page at build time, and so we don't
+have to inline all of these styles. */
+/* ---------------------------------- */
+
+.footnotes-js {
+  --side: 64px;
+  --page-margin: calc((100vw - var(--content-width)) / 2);
+  position: absolute !important;
+  top: 0 !important;
+  left: calc(var(--content-width) + var(--side)) !important;
+  width: calc(var(--page-margin) - var(--side) - 48px) !important;
+  max-width: 192px !important;
+}
+
+.footnotes-js li {
+  position: absolute !important;
+}
+
+.footnotes-js li a.footnote-anchor {
+  display: none !important;
+}
+
+/* ---------------------------------- */
+
+a,
+.underline,
+.footnote-anchor {
+  color: var(--link);
+  text-decoration: none;
+  background-image: linear-gradient(var(--link), var(--link));
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: all 0.3s;
+  text-shadow: 0.1em 0 var(--bg), -0.1em 0 var(--bg);
+}
+
+a:hover,
+.underline:hover,
+.footnote-anchor:hover {
+  color: var(--fg);
+  background-size: 0% 1px;
+}
+
+.post {
+  --link: var(--blue);
+}
+
+.heading-link {
+  color: var(--fg);
+  background-image: none;
+  text-shadow: none;
+}
+
+.post .heading-link {
+  background-image: linear-gradient(var(--fg), var(--fg));
+  background-size: 0% 1px;
+}
+
+.post .heading-link:hover {
+  background-size: 100% 1px;
+}
+
+/* ---------------------------------- */
+
+.index-links {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto;
+  grid-column-gap: 1em;
+}
+
+.index-links ul {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .index-links {
+    display: block;
+  }
+}
+
+.company-list ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-column-gap: 1em;
+}
+
+@media (max-width: 768px) {
+  .company-list ul {
+    display: block;
+  }
+}
+
+.writing-list ul li em {
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+  font-family: var(--font-display);
+  font-feature-settings: normal;
+}
+
+/* ---------------------------------- */
+
+nve-toc:not(:defined) > * {
+  display: none;
+}
+
+nve-toc {
+  --side: 44px;
+  --page-margin: calc((100vw - var(--content-width)) / 2);
+  position: fixed;
+  top: 100px;
+  right: calc(var(--page-margin) + var(--content-width) + var(--side) + 20px);
+  width: calc(var(--page-margin) - var(--side) - 48px);
+  max-width: 192px;
+}
+
+.nve-toc-container {
+  display: none; /* will be updated by JS if available, progressive enhancement */
+}
+
+.nve-toc-container h5 {
+  opacity: 1;
+}
+
+.nve-toc-container li {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+}
+
+.nve-toc-container li a.active {
+  color: var(--fg);
+}
+
+@media (max-width: 1100px) {
+  nve-toc {
+    display: none;
+  }
+}

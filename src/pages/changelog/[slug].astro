@@ -1,0 +1,22 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const { slug } = Astro.params;
+if (!slug) throw new Error('Slug not found');
+const changelog = await getEntry('changelogs', slug);
+
+if (!changelog) throw new Error('No changelog found for this slug');
+const { Content } = await changelog.render();
+
+// Generate static pages
+export async function getStaticPaths() {
+  const changelogs = await getCollection('changelogs');
+  return changelogs.map(changelog => ({ params: { slug: changelog.slug } }));
+}
+---
+
+<Layout title={changelog.data.title} description={changelog.data.description}>
+  <h1>{changelog.data.title}</h1>
+  <Content />
+</Layout>

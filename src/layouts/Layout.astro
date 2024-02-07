@@ -1,0 +1,40 @@
+---
+import '../styles.css'
+
+export interface Props {
+	title: string;
+	description: string;
+	socialImageUrl?: string;
+}
+
+const baseUrl = import.meta.env.SITE;
+const { title, description, socialImageUrl } = Astro.props;
+const {slug} = Astro.params;
+const seoUrl = slug ? `${baseUrl}/${slug}` : baseUrl;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/nve-icon.png" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+		<meta name="description" content={description} />
+	
+		<!-- OpenGraph -->
+		<meta property="og:url" content={seoUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={socialImageUrl} />
+	</head>
+	<body>
+		<div class="app">
+			{JSON.stringify(Astro, null, 2)}
+			<slot />
+		</div>
+	</body>
+</html>
