@@ -1,0 +1,30 @@
+---
+import { stringToId } from '../common/StringToId';
+import Spacer from './Spacer.astro';
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+}
+
+const { heading, subheading } = Astro.props;
+const id = heading ? stringToId(heading) : '';
+---
+
+<section>
+    <h1 class="heading" id={id}><a href={`#${id}`} class="heading-link">{heading}</a></h1>
+    <p class="article-summary">{subheading}</p>
+</section>
+<Spacer size=5.25 />
+
+<style>
+    .heading {
+       /* line-height: 1; */
+       margin: 0;
+    }
+
+    .article-summary {
+        /* line-height: 1; */
+        margin: 0;
+    }
+</style>

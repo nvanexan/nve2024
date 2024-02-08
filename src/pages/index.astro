@@ -1,29 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-
-const posts = await getCollection('posts');
+import Contact from '../components/Contact.astro';
 ---
 
-<Layout title="Keystatic & Astro's Content Collections">
-  <div>
-    <h1>Keystatic ⚡️ + Astro 🚀</h1>
-    <p>
-      This homepage shows how to load data from Astro's content collections.
-    </p>
-    <p>
-      <a href="/keystatic">Click here to visit the Admin UI</a>, or the link
-      below to view a post in the collection.
-    </p>
-    <h2>Posts</h2>
+<Layout>
+  <h1>Nick Van Exan</h1>
+  <p>Software developer and certified privacy professional (CIPP C/E). Helping organizations build <em>ethical</em> products and services people can trust.</p>
+  <nav class="index-links">
     <ul>
-      {
-        posts.map(post => (
-          <li>
-            <a href={`/posts/${post.slug}`}>{post.data.title}</a>
-          </li>
-        ))
-      }
+      <li><a href="/now">Now</a></li>
+      <li><a href="/changelog">Changelog</a></li>
+      <li><a href="/writing">Writing</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
-  </div>
+  </nav>
+  <Contact />
 </Layout>

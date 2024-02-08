@@ -1,0 +1,78 @@
+<nve-footnotes></nve-footnotes>
+
+<script>
+  class NveFootnotes extends HTMLElement {
+    fnContainer: HTMLElement | null = null;
+    mediaQuery: MediaQueryList | null = null;
+    debounceTimer: any = null;
+
+    constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+      this.fnContainer = document.querySelector(".footnotes");
+      this.debounceTimer = null;
+    }
+
+    setFootnotePositions() {
+      if (this.fnContainer) {
+        if (this.mediaQuery?.matches) {
+          this.fnContainer.setAttribute("class", "footnotes");
+        } else {
+          this.fnContainer.setAttribute("class", "footnotes footnotes-js");
+        }
+        const footnotes = document.querySelectorAll(".footnotes li");
+        footnotes.forEach((elem) => {
+          const id = elem.id.replace("fn", "");
+          const fnRef = document.getElementById(`fnref${id}`);
+          let containerTop = fnRef?.parentElement?.parentElement?.offsetTop;
+          let top;
+          if (!elem.previousElementSibling) {
+            top = containerTop;
+          } else {
+            const prevSiblingRect =
+              elem.previousElementSibling.getBoundingClientRect();
+            const prevSiblingBottom =
+              prevSiblingRect.y + prevSiblingRect.height + window.scrollY;
+            top =
+              prevSiblingBottom && prevSiblingBottom > (containerTop as number)
+                ? prevSiblingBottom
+                : containerTop;
+          }
+          (elem as HTMLElement).style.top = this.mediaQuery?.matches
+            ? "0px"
+            : `${top}px`;
+        });
+      }
+    }
+
+    debounce(func: Function, delay: number) {
+      // Clear the previous timer
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+      // Set up a new timer
+      this.debounceTimer = setTimeout(func, delay);
+    }
+
+    handleResizeEvent() {
+      this.debounce(this.setFootnotePositions.bind(this), 150);
+    }
+
+    // on web-component connection, setup listeners
+    connectedCallback() {
+      window.addEventListener("resize", this.handleResizeEvent.bind(this));
+      this.mediaQuery = window.matchMedia("(max-width: 1100px)");
+      setTimeout(() => {
+        this.setFootnotePositions();
+      }, 500);
+    }
+
+    // on web-component disconnect, remove listeners
+    disconnectedCallback() {
+      window.removeEventListener("resize", this.handleResizeEvent.bind(this));
+      this.mediaQuery = null;
+    }
+  }
+
+  customElements.define("nve-footnotes", NveFootnotes);
+</script>

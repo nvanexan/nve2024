@@ -1,6 +1,10 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import ArticleTitle from '../../components/ArticleTitle.astro';
+import Header from '../../components/Header.astro';
+import Spacer from '../../components/Spacer.astro';
+import BackToLink from '../../components/BackToLink.astro';
 
 const { slug } = Astro.params;
 if (!slug) throw new Error('Slug not found');
@@ -17,6 +21,9 @@ export async function getStaticPaths() {
 ---
 
 <Layout title={changelog.data.title} description={changelog.data.description}>
-  <h1>{changelog.data.title}</h1>
+  <Header showTitle={true} />
+  <ArticleTitle heading={changelog.data.title} subheading={changelog.data.description} />
   <Content />
+  <Spacer />
+  <BackToLink text="Back to Changelog" href="/changelog">
 </Layout>

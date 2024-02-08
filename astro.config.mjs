@@ -11,5 +11,7 @@ export default defineConfig({
   output: "hybrid",
   site: "https://nick.vanexan.ca",
   base: "/",
-  adapter: vercel(),
+  adapter: vercel({
+    edgeMiddleware: true,
+  }),
 });

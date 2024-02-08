@@ -1,4 +1,12 @@
-import { config, fields, collection, component } from "@keystatic/core";
+import {
+  config,
+  fields,
+  collection,
+  singleton,
+  component,
+} from "@keystatic/core";
+
+import react, { createElement } from "react";
 
 export default config({
   storage: {
@@ -20,14 +28,53 @@ export default config({
           label: "Social Image URL",
           defaultValue: "/nve-social-logo.png",
         }),
+        date: fields.date({
+          label: "Date",
+          defaultValue: { kind: "today" },
+          validation: {
+            isRequired: true,
+          },
+        }),
+        published: fields.checkbox({
+          label: "Published",
+          defaultValue: false,
+        }),
         content: fields.document({
           label: "Content",
           formatting: true,
           dividers: true,
           links: true,
           images: {
-            directory: "src/assets/images/posts",
-            publicPath: "../../assets/images/posts/",
+            directory: "public/images/posts",
+            publicPath: "/images/posts/",
+          },
+          componentBlocks: {
+            diagram: component({
+              preview: ({ fields }) =>
+                react.createElement(
+                  "div",
+                  {},
+                  JSON.stringify(
+                    `public/images/diagrams/dark/${fields.dark.value?.filename}`
+                  )
+                ),
+              label: "Diagram",
+              schema: {
+                light: fields.image({
+                  label: "Light",
+                  directory: "public/images/diagrams/light",
+                  publicPath: "/images/diagrams/light/",
+                }),
+                dark: fields.image({
+                  label: "Dark",
+                  directory: "public/images/diagrams/dark",
+                  publicPath: "/images/diagrams/dark/",
+                }),
+                alt: fields.text({
+                  label: "Alt text",
+                }),
+              },
+            }),
           },
         }),
       },
@@ -43,14 +90,25 @@ export default config({
           label: "Description",
           defaultValue: "This is a description",
         }),
+        date: fields.date({
+          label: "Date",
+          defaultValue: { kind: "today" },
+          validation: {
+            isRequired: true,
+          },
+        }),
+        published: fields.checkbox({
+          label: "Published",
+          defaultValue: false,
+        }),
         content: fields.document({
           label: "Content",
           formatting: true,
           dividers: true,
           links: true,
           images: {
-            directory: "src/assets/images/changelogs",
-            publicPath: "../../assets/images/changelogs/",
+            directory: "public/images/changelogs",
+            publicPath: "/images/changelogs/",
           },
         }),
       },
