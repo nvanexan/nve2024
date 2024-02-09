@@ -6,7 +6,9 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    socialImageUrl: z.string(),
+    socialImageUrl: z.string().optional(),
+    date: z.string(),
+    published: z.boolean().optional(),
   }),
 });
 
@@ -15,7 +17,17 @@ const changelogs = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    date: z.string(),
+    published: z.boolean().optional(),
   }),
 });
 
-export const collections = { posts, changelogs };
+const about = defineCollection({
+  // Type-check frontmatter using a schema
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+  }),
+});
+
+export const collections = { posts, changelogs, about };

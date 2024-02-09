@@ -1,22 +1,29 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import ArticleTitle from "../../components/ArticleTitle.astro";
-import Header from "../../components/Header.astro";
+import Layout from "../../../layouts/Layout.astro";
+import ArticleTitle from "../../../components/ArticleTitle.astro";
+import Header from "../../../components/Header.astro";
+
+export function getStaticPaths() {
+  const years = ["2023", "2022", "2021"];
+  return years.map((year) => ({ params: { year } }));
+}
+
+const params = Astro.params;
 
 const changelogs = await getCollection("changelogs");
 const sortedChangelogs = changelogs
   .filter((p) => !!p.data.published)
+  .filter((p) => p.data.date.startsWith(params.year))
   .sort(
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-  )
-  .slice(0, 12);
+  );
 ---
 
 <Layout title="Changelog" description="Monthly updates + happenings">
   <Header showTitle={true} />
   <ArticleTitle heading="Changelog" subheading="Monthly updates + happenings" />
-  <h2>Latest Updates</h2>
+  <h2>{params.year} Updates</h2>
   <section class="bookmarks">
     <ul>
       {
@@ -30,16 +37,6 @@ const sortedChangelogs = changelogs
       }
     </ul>
   </section>
-
-  <h2>Archives</h2>
-  <section class="bookmarks">
-    <ul>
-      <li><a href="/changelog/archive/2023">2023</a></li>
-      <li><a href="/changelog/archive/2022">2022</a></li>
-      <li><a href="/changelog/archive/2021">2021</a></li>
-    </ul>
-  </section>
-
   {
     sortedChangelogs.map(async (changelog) => {
       const { Content } = await changelog.render();

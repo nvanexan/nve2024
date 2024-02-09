@@ -1,40 +1,46 @@
 ---
-import '../styles.css'
+import "../styles.css";
 
 export interface Props {
-	title: string;
-	description: string;
-	socialImageUrl?: string;
+  title?: string;
+  description?: string;
+  socialImageUrl?: string;
 }
 
 const baseUrl = import.meta.env.SITE;
 const { title, description, socialImageUrl } = Astro.props;
-const {slug} = Astro.params;
+const { slug } = Astro.params;
 const seoUrl = slug ? `${baseUrl}/${slug}` : baseUrl;
+const fallbackImageUrl = `${baseUrl}/nve-social-logo.png`;
+const fullTitle = title ? `${title} | Nick Van Exan` : "Nick Van Exan";
+const fallbackDescription =
+  "Software developer and data protection consultant (CIPP/C, CIPP/E) from Toronto.";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/nve-icon.png" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/nve-icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
 
-		<meta name="description" content={description} />
-	
-		<!-- OpenGraph -->
-		<meta property="og:url" content={seoUrl} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={socialImageUrl} />
-	</head>
-	<body>
-		<div class="app">
-			{JSON.stringify(Astro, null, 2)}
-			<slot />
-		</div>
-	</body>
+    <meta name="description" content={description} />
+
+    <!-- OpenGraph -->
+    <meta property="og:url" content={seoUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta
+      property="og:description"
+      content={description || fallbackDescription}
+    />
+    <meta property="og:image" content={socialImageUrl || fallbackImageUrl} />
+  </head>
+  <body>
+    <div class="app">
+      <slot />
+    </div>
+  </body>
 </html>

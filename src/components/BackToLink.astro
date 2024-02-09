@@ -1,0 +1,29 @@
+---
+interface Props {
+  text: string;
+  href: string;
+}
+
+const props = Astro.props;
+---
+
+<a href={props.href} class="back-link">{props.text}</a>
+
+<style>
+  .back-link:before {
+    content: "← ";
+    position: absolute;
+    transform: translateX(-1rem);
+    transition: transform 0.2s ease-out;
+  }
+  .back-link {
+    margin-left: 1rem;
+    /* color: var(--fg);  */
+    /* background-image: none; */
+    /* text-shadow: none; */
+  }
+
+  .back-link:hover::before {
+    transform: translateX(-2rem);
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  showTitle?: boolean;
+}
+
+const { showTitle } = Astro.props;
+---
+<header class="meta">
+<p class="content-heading"><a href="/" class="heading-link">Nick Van Exan</a></p>
+{showTitle && <p class="content-text">Software Developer</p>}
+</header>
+
+<style>
+  .content-heading {
+    margin: 0 !important;
+  }
+
+  .content-text {
+    margin: 0 !important;
+  }
+</style>

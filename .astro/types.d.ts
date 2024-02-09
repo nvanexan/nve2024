@@ -183,19 +183,191 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"changelogs": {
-"november-2023.mdoc": {
-	id: "november-2023.mdoc";
-  slug: "november-2023";
+		"about": {
+"content.mdoc": {
+	id: "content.mdoc";
+  slug: "content";
+  body: string;
+  collection: "about";
+  data: InferEntrySchema<"about">
+} & { render(): Render[".mdoc"] };
+};
+"changelogs": {
+"2021-11.mdoc": {
+	id: "2021-11.mdoc";
+  slug: "2021-11";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2021-12.mdoc": {
+	id: "2021-12.mdoc";
+  slug: "2021-12";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-01.mdoc": {
+	id: "2022-01.mdoc";
+  slug: "2022-01";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-02.mdoc": {
+	id: "2022-02.mdoc";
+  slug: "2022-02";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-03.mdoc": {
+	id: "2022-03.mdoc";
+  slug: "2022-03";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-04.mdoc": {
+	id: "2022-04.mdoc";
+  slug: "2022-04";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-05.mdoc": {
+	id: "2022-05.mdoc";
+  slug: "2022-05";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-06.mdoc": {
+	id: "2022-06.mdoc";
+  slug: "2022-06";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-11.mdoc": {
+	id: "2022-11.mdoc";
+  slug: "2022-11";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2022-12.mdoc": {
+	id: "2022-12.mdoc";
+  slug: "2022-12";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-01.mdoc": {
+	id: "2023-01.mdoc";
+  slug: "2023-01";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-02.mdoc": {
+	id: "2023-02.mdoc";
+  slug: "2023-02";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-03.mdoc": {
+	id: "2023-03.mdoc";
+  slug: "2023-03";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-04.mdoc": {
+	id: "2023-04.mdoc";
+  slug: "2023-04";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-05.mdoc": {
+	id: "2023-05.mdoc";
+  slug: "2023-05";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-06.mdoc": {
+	id: "2023-06.mdoc";
+  slug: "2023-06";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-07.mdoc": {
+	id: "2023-07.mdoc";
+  slug: "2023-07";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-08.mdoc": {
+	id: "2023-08.mdoc";
+  slug: "2023-08";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-09.mdoc": {
+	id: "2023-09.mdoc";
+  slug: "2023-09";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-10.mdoc": {
+	id: "2023-10.mdoc";
+  slug: "2023-10";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2023-11.mdoc": {
+	id: "2023-11.mdoc";
+  slug: "2023-11";
   body: string;
   collection: "changelogs";
   data: InferEntrySchema<"changelogs">
 } & { render(): Render[".mdoc"] };
 };
+"now": {
+"content.mdoc": {
+	id: "content.mdoc";
+  slug: "content";
+  body: string;
+  collection: "now";
+  data: any
+} & { render(): Render[".mdoc"] };
+};
 "posts": {
-"first-post.mdoc": {
-	id: "first-post.mdoc";
-  slug: "first-post";
+"markdoc.mdoc": {
+	id: "markdoc.mdoc";
+  slug: "markdoc";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdoc"] };
+"micro-frontends.mdoc": {
+	id: "micro-frontends.mdoc";
+  slug: "micro-frontends";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdoc"] };
+"web-components.mdoc": {
+	id: "web-components.mdoc";
+  slug: "web-components";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">

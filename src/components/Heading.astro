@@ -1,0 +1,43 @@
+---
+const props = Astro.props;
+---
+
+{
+  props.level === 1 ? (
+    <h1 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h1>
+  ) : props.level === 2 ? (
+    <h2 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h2>
+  ) : props.level === 3 ? (
+    <h3 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h3>
+  ) : props.level === 4 ? (
+    <h4 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h4>
+  ) : props.level === 5 ? (
+    <h5 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h5>
+  ) : props.level === 6 ? (
+    <h6 id={props.id} class="heading">
+      <a href={`#${props.id}`} class="heading-link">
+        <slot />
+      </a>
+    </h6>
+  ) : null
+}

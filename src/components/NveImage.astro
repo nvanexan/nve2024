@@ -1,0 +1,18 @@
+---
+const props = Astro.props;
+---
+
+{
+  props.alt ? (
+    <figure class="image-container">
+      <>
+        <img src={props.src} alt={props.alt} />
+        <figcaption>{props.alt}</figcaption>
+      </>
+    </figure>
+  ) : (
+    <div class="image-container">
+      <img src={props.src} alt={props.alt} />
+    </div>
+  )
+}

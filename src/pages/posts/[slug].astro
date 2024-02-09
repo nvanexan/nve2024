@@ -1,7 +1,9 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import Header from '../../components/Header.astro';
+import Spacer from '../../components/Spacer.astro';
+import ArticleTitle from '../../components/ArticleTitle.astro';
 
 const { slug } = Astro.params;
 if (!slug) throw new Error('Slug not found');
@@ -19,6 +21,7 @@ export async function getStaticPaths() {
 ---
 
 <BlogPostLayout title={post.data.title} description={post.data.description} socialImageUrl={post.data.socialImageUrl}>
-  <h1>{post.data.title}</h1>
+  <Header showTitle={true} />
+  <ArticleTitle heading={post.data.title} subheading={post.data.description} />
   <Content />
 </Layout>

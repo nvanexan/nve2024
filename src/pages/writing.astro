@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import ArticleTitle from "../components/ArticleTitle.astro";
+
+const posts = await getCollection("posts");
+const sortedPosts = posts
+  .filter((p) => !!p.data.published)
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+---
+
+<Layout title="Writing" description="Thoughts, notes, musings, etc.">
+  <Header showTitle={true} />
+  <ArticleTitle heading="Writing" subheading="Thoughts, notes, musings, etc." />
+  <section class="writing-list">
+    <ul>
+      {
+        sortedPosts.map(async (post) => {
+          return (
+            <li>
+              <a href={`/posts/${post.slug}`}>{post.data.title}</a>{" "}
+              <em>({post.data.date})</em>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</Layout>
