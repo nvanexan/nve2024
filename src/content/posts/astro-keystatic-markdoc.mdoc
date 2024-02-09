@@ -6,25 +6,27 @@ published: true
 ---
 Hello from Astro!
 
-Last week, I re-wrote my web-site, porting it from a custom [Markdoc](https://markdoc.dev/) build solution to a new solution that leverages [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/). This is a short summary of my journey.
+Last week, I re-wrote my website, porting it from a custom [Markdoc](https://markdoc.dev/) build solution to a new solution that leverages [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/). This is a short summary of my journey.
 
 ## Motivation
 
-I have [written before](/posts/markdoc) about the aims of my original Markdoc solution, and the beautiful [performance gains](https://nick.vanexan.ca/posts/markdoc#performance-gains-using-markdoc-+-custom-build) I got doing that. Everything so far has worked wonderfully. I write my posts in markdown either in [iA Writer](https://ia.net/writer) or directly on [GitHub](https://github.com/) . The changes I make against the GitHub repo automatically trigger a new [Vercel](https://vercel.com/) build and deployment.
+A couple of years ago I ripped out [Next.JS](https://nextjs.org/) and [MDX](https://mdxjs.com/) from my personal website, unhappy with the fact that my users had to download React and related framework JS for what was a very simple and primarily text-based website. I replaced it with [Markdoc](https://markdoc.dev/) and a couple of small build and compile scripts. You can [read more](https://nick.vanexan.ca/posts/markdoc) about that journey, and the [performance gains](https://nick.vanexan.ca/posts/markdoc#performance-gains-using-markdoc-+-custom-build) I got from doing that.
 
-What I loved about this solution was that I wrote the build scripts, compiler, templates, etc. myself and did not have to rely on hardly any libraries / frameworks for implementation. There was no third party libraries to maintain other than Markdoc, and honestly I could never have updated that library and it would have been fine. This made my code very resilient to changes. And as anyone in web dev will probably attest, that's a huge win. At the end of the day, we have all these tools and frameworks but we're ultimately doing is rendering HTML and CSS to display some stuff on screens. It was a great pleasure just ripping everything down to a basic solution that just does that. Cool.
+Everything so far has worked wonderfully. I write my posts in markdown either in [iA Writer](https://ia.net/writer) or directly on [GitHub](https://github.com/) . The changes I make against the GitHub repo automatically trigger a new [Vercel](https://vercel.com/) build and deployment. The build and deployment takes < 1 minute. Just commit a new Markdoc file to the repo and you have a new blog post. Simple and effective.
+
+What I loved about this solution was that I wrote the build scripts, compiler, templates, etc. myself and did not have to rely on hardly any libraries / frameworks for implementation. I am a minimalist. My site was about as minimal as it gets. There was no third party libraries to maintain other than Markdoc, and honestly I could never have updated that library and it would have been fine. This made my code very resilient to changes. And to me that's a huge win. The less tooling you use, the less there is to maintain, the more the solution will last amidst all the new hotness that may surface in web dev land.
 
 But there's been a few pain points:
 
-- **Routing and templating:** I would need to extend my simple build scripts to support more advanced routing and templating and I'm feeling pretty lazy about that.
-- **Editing content:** I love iA Writer or Vim for writing markdown but sometimes I want to make a change using a WYSIWYG editor, with support for automatically adding images.
+- **Routing and templating:** my very simple templating solution at the moment works fine and could be extended further, to support more advanced routing and templating, but I'm busy lately and I'm feeling pretty lazy about that.
+- **Editing content:** I like writing my first drafts of things in [iA Writer](https://ia.net/writer) or Vim (with the [vim-pencil](https://github.com/preservim/vim-pencil) plugin), but sometimes I want to make a change using a WYSIWYG editor, particularly when adding images.
 
-I wanted to solve these pain points, but with the same hard requirements in mind that I had in my effort 2 years ago:
+I wanted to solve these pain points, but with the same hard requirements I had two years ago:
 
-- **Performance:** I wanted to deliver outcomes that are at least as fast as what I have today… which, given that I've basically eliminated most JS from my delivered site, is very fast.
-- **Resilience:** I wanted to have text and building blocks that will be resilient to changes in the industry over time… that can just be moved or migrated or deployed as static assets somewhere without any trouble
+- **Performance:** the solution must deliver outcomes that are at least as fast as what I have today… which, given that I've basically eliminated most JS from my delivered site, is very fast.
+- **Resilience:** the solution must be resilient to changes in the industry over time, and be portable to other technologies or a simple custom build script as a fallback.
 
-I was happy to discover that others have also been working on leveraging Markdoc to deliver blazing fast content websites. Enter [Astro](https://astro.build/) + [Keystatic](https://keystatic.com/).
+I was happy to discover that others with a great deal more money and time than me have also been working on leveraging [Markdoc](https://markdoc.dev/) to deliver blazing fast content websites with minimal JavaScript. Enter [Astro](https://astro.build/) + [Keystatic](https://keystatic.com/).
 
 ## Astro
 
@@ -32,7 +34,7 @@ I was happy to discover that others have also been working on leveraging Markdoc
 
 ## Keystatic
 
-[Keystatic](https://keystatic.com/) is a file-based CMS by Thinkmill that leverages Markdoc to allow you to live edit content on GitHub or your local file system in a very cool way. With Keystatic, you can spin up a fairly robust CMS that gives you a great interface and workflow for creating and editing and Markdoc-based content.
+[Keystatic](https://keystatic.com/) is a file-based CMS by [Thinkmill](https://www.thinkmill.com.au/) that leverages Markdoc to allow you to live edit content on GitHub or your local file system in a very cool way. With Keystatic, you can spin up a fairly robust CMS that gives you a great interface and workflow for creating and editing and Markdoc-based content.
 
 Here's a quick example of what it looks like editing this very post in Keystatic:
 
@@ -40,23 +42,27 @@ Here's a quick example of what it looks like editing this very post in Keystatic
 
 ## Bringing It All Together
 
-Migrating my existing site to a solution based on Astro and Keystatic was pretty straightforward. I created a new repo based on the Keystatic Astro starter build. I then set up my Keystatic schemas and copied over my existing Markdoc files. This was mostly just a matter of copy-paste, with a couple of tweaks to some frontmatter fields. Resilient technologies ftw!
+Migrating my existing site to a solution based on [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/) was pretty straightforward. I created a new repo based on the [Keystatic Astro quick start](https://keystatic.com/docs/installation-astro). I then set up my Keystatic schemas and copied over my existing Markdoc files. This was mostly just a matter of copy-paste, with a couple of tweaks to some frontmatter fields. Resilient technologies ftw!
 
 The one thing that Astro + Keystatic's Markdoc implementations lacked, however, were support for footnotes and also highlights or mark elements. The Markdoc team does not favour augmenting their parser to parse these items, preferring instead for users of Markdoc to write their own custom tags.[^1]
 
-I am not in favour of this approach for two reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) I want to get the same benefits of formatting in iA Writer if I choose to draft my content there, and iA Writer does indeed parse markdown footnotes as well as highlights. Here's an example of what I'm talking about… the way iA Writer interprets markdown is how I also want markdown represented on my site, and if I open a Markdoc file to edit in iA Writer, I want to see the same renderings for highlights and footnotes.
+I am not in favour of this approach for three reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) the Keystatic approach to dealing with custom tags inside of a rich content editor in the CMS, via its [componentBlocks API](https://keystatic.com/docs/fields/document#component-blocks), is a bit too rudimentary for my liking at this point; and (3) the way iA Writer renders markdown in its app is how I also render markdown on my site, and so if I open a Markdoc file in iA Writer for content authoring or editing, I want to see the same renderings for highlights and footnotes.
+
+Here's an example of how iA Writer interprets and renders highlights and footnotes...
 
 ![Editing a post in iA Writer](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.40.34%20PM.png)
 
-You'll notice on my site that I succeeded in getting this result without custom Markdoc tags, and to do that I took some of my custom parsing logic from my old site and ported it into a library called [@nvanexan/markdoc-extensions](https://www.npmjs.com/package/@nvanexan/markdoc-extensions). This package just has a simple parser that parses highlights and footnotes from a Markdoc file. I simply import this package into my new site repo, and [patch-package](https://www.npmjs.com/package/patch-package) the [@astrojs/markdoc](https://www.npmjs.com/package/@astrojs/markdoc) library, subbing in my extended parser for the vanilla Markdoc parser. Works like a charm.
+I succeeded in getting my desired result without custom Markdoc tags by taking the custom parsing logic I wrote for my existing site and publishing it as an NPM package ([@nvanexan/markdoc-extensions](https://www.npmjs.com/package/@nvanexan/markdoc-extensions)). This package just has a simple parser that extends the existing Markdoc parser with optional support to also parse highlights and footnotes. I simply import this package into my new site's repo, and then [patch-package](https://www.npmjs.com/package/patch-package) the [@astrojs/markdoc](https://www.npmjs.com/package/@astrojs/markdoc) library, substituting my extended parser for the vanilla Markdoc parser. Works like a charm.
 
 ![Screenshot showing highlights and footnotes on my site](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%205.00.25%20PM.png)
 
 ## Results and Performance
 
-I am very happy with the result. I now have a nice CMS-like editing experience when I want it, with the flexibility of still being able to edit and author content in my repo directly even without Keystatic, because it's just Markdoc at the end of the day. Resilience!
+I am very happy with the results of this experiment. I now have a nice CMS-like editing experience when I want it, with the flexibility of still being able to edit and author content in my repo directly even without Keystatic, because it's just Markdoc at the end of the day. Resilience!
 
-What about performance? I am thrilled to say that the super awesome lighthouse scores I achieved 2 years ago when I ripped out Next.JS and MDX and replaced with my own Markdoc solution are still maintained. Here's a comparison.\
+What about performance? I am thrilled to say that the super awesome lighthouse scores I achieved two years ago when I ripped out Next.JS and MDX and replaced with my own Markdoc solution are still maintained. Here's a comparison of all three versions of this site (Next.JS, Markdoc custom, Astro + Markdoc).
+
+![2019 site - using Next.JS and MDX](/images/posts/astro-keystatic-markdoc/old-site-desktop.webp)
 
 ![2022 site score - custom Markdoc solution](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.57.05%20PM.png)
 
@@ -64,13 +70,15 @@ What about performance? I am thrilled to say that the super awesome lighthouse s
 
 ## Concluding Thoughts
 
-Porting my site to Astro was really easy, because I had started with a resilient Markdoc based solution. I am nervous about the maintainability of an Astro and Keystatic based solution but it was a perfect quick win to give me some CMS-like capabilities without having to sacrifice performance. I think I can summarize my thoughts on this tech as follows...
+Porting my site to Astro was really easy, because I had started with a resilient [Markdoc](https://markdoc.dev/)-based solution. I am a bit uncomfortable about the maintainability of an [Astro](https://astro.build/)-based solution (thinking of my experience with [GatsbyJS](https://www.gatsbyjs.com/) for example of how promising framework ideas can go sideways pretty quickly) but it was a perfect quick win to give me some CMS-like capabilities without having to sacrifice performance. I think I can summarize my thoughts on this tech as follows...
 
-- **Astro:** the best framework out there right now for building content-based websites with killer performance
-- **Keystatic:** a really good CMS-like experience for small sites, but not likely powerful enough for larger sites
-- **Vercel:** still the best deployment solution out there right now, from automated preview builds on PRs, to collaboration, etc.
-- **Markdoc:** a super powerful innovation on markdown, and I think a fairly resilient piece of tech for year to come
+- **Astro:** the best framework out there right now for building content-based websites with killer performance.
+- **Keystatic:** a really good CMS-like experience for small and hobby sites like this one, not yet ready for large or crucial line of business sites.
+- **Vercel:** the best deployment solution for web sites and apps out there right now, from automated preview builds on PRs, to collaboration and commenting on live preview builds, etc.
+- **Markdoc:** a super powerful innovation on markdown, and I think a fairly resilient piece of tech for year to come given its portability and growing popularity in frameworks like Astro.
 
-If you made it this far, thanks for reading! See you in the next one!
+---
+
+*Nice, you made it to the end of this post. Thanks for reading. Other posts by me are over on my*&nbsp;[*writing page*](https://nick.vanexan.ca/writing)*. If you'd like to subscribe to this blog, you can do so via*&nbsp;[*RSS*](https://nick.vanexan.ca/feed.xml)&nbsp;*or*&nbsp;[*Email Newsletter*](https://buttondown.email/nickvanexan)*.*
 
 [^1]: See [issue 70](https://github.com/markdoc/markdoc/issues/70) and my own [pull request 40](https://github.com/markdoc/markdoc/pull/40) in the Markdoc repo for more details.
