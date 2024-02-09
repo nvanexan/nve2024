@@ -14,6 +14,7 @@ const { title, description, socialImageUrl } = Astro.props;
 const path = "posts";
 const { slug } = Astro.params;
 const seoUrl = path && slug ? `${baseUrl}/${path}/${slug}` : baseUrl;
+const fallbackImageUrl = `${baseUrl}/nve-social-logo.png`;
 ---
 
 <!doctype html>
@@ -24,7 +25,7 @@ const seoUrl = path && slug ? `${baseUrl}/${path}/${slug}` : baseUrl;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/nve-icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{title} | Nick Van Exan</title>
 
     <meta name="description" content={description} />
 
@@ -32,7 +33,7 @@ const seoUrl = path && slug ? `${baseUrl}/${path}/${slug}` : baseUrl;
     <meta property="og:url" content={seoUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image" content={socialImageUrl || fallbackImageUrl} />
 
     <!-- Prism -->
     <link rel="stylesheet" href="/styles/prism-theme.css" />
