@@ -5,8 +5,46 @@ socialImageUrl: /nve-social-logo.png
 date: '2024-02-09'
 published: false
 ---
-Last week, I ported my site to Astro and Keystatic. Why? A few reasons...
+Hello from Astro!
 
-- I wanted the flexibility of routing and layout templating in Astro
-- I wanted the flexibility to use a CMS for small edits (I use IA Writer for larger pieces)
-- I wanted to ensure I still had great performance
+Last week, I re-wrote my web-site, porting it from a custom [Markdoc](https://markdoc.dev/) build solution to a new solution that leverages [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/). This is a short summary of my journey.
+
+## Motivation
+
+I have [written before](/posts/markdoc) about the aims of my original Markdoc solution, and the beautiful [performance gains](https://nick.vanexan.ca/posts/markdoc#performance-gains-using-markdoc-+-custom-build) I got doing that. Everything so far has worked wonderfully. I write my posts in markdown either in [iA Writer](https://ia.net/writer) or directly on [GitHub](https://github.com/) . The changes I make against the GitHub repo automatically trigger a new [Vercel](https://vercel.com/) build and deployment.
+
+What I loved about this solution was that I wrote the build scripts, compiler, templates, etc. myself and did not have to rely on hardly any libraries / frameworks for implementation. There was no third party libraries to maintain other than Markdoc, and honestly I could never have updated that library and it would have been fine. This made my code very resilient to changes. And as anyone in web dev will probably attest, that's a huge win. At the end of the day, we have all these tools and frameworks but we're ultimately doing is rendering HTML and CSS to display some stuff on screens. It was a great pleasure just ripping everything down to a basic solution that just does that. Cool.
+
+But there's been a few pain points:
+
+- **Routing and templating:** I would need to extend my simple build scripts to support more advanced routing and templating and I'm feeling pretty lazy about that.
+- **Editing content:** I love iA Writer or Vim for writing markdown but sometimes I want to make a change using a WYSIWYG editor, with support for automatically adding images.
+
+I wanted to solve these pain points, but with the same hard requirements in mind that I had in my effort 2 years ago:
+
+- **Performance:** I wanted to deliver outcomes that are at least as fast as what I have today… which, given that I've basically eliminated most JS from my delivered site, is very fast.
+- **Resilience:** I wanted to have text and building blocks that will be resilient to changes in the industry over time… that can just be moved or migrated or deployed as static assets somewhere without any trouble
+
+I was happy to discover that others have also been working on leveraging Markdoc to deliver blazing fast content websites. Enter [Astro](https://astro.build/) + [Keystatic](https://keystatic.com/).
+
+## Astro
+
+[Astro](https://astro.build/) is self-described as a framework but it's unique among other frameworks in that it ultimately produces HTML and CSS and only JS when / as necessary. It achieves this through an island-based architecture. In a way, it's a much grander extension of my initial idea. It has support for routing, can do hybrid apps that are statically generated as well as server side rendered and client hydrated, and has wonderful opinions about integrations with web-components. It's simple to get the hang of and has a really ergonomic approach to routing and templating.
+
+## Keystatic
+
+[Keystatic](https://keystatic.com/) is a file-based CMS by Thinkmill that leverages Markdoc to allow you to live edit content on GitHub or your local file system in a very cool way. With Keystatic, you can spin up a fairly robust CMS that gives you a great interface and workflow for creating and editing and Markdoc-based content.
+
+Here's a quick example of what it looks like editing this very post in Keystatic:
+
+![Writing a blog post in Keystatic](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.24.58%20PM.png)
+
+## Bringing It All Together
+
+Migrating my existing site to a solution based on Astro and Keystatic was pretty straightforward. I created a new repo based on the Keystatic Astro starter build. I then set up my Keystatic schemas and copied over my existing Markdoc files. This was mostly just a matter of copy-paste, with a couple of tweaks to some frontmatter fields. Resilient technologies ftw!
+
+The one thing that Astro + Keystatic's Markdoc implementations lacked, however, were support for footnotes and also highlights or mark elements. The Markdoc team does not favour augmenting their parser to parse these items, preferring instead for users of Markdoc to write their own custom tags.[^1]
+
+I am not in favour of this approach for two reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) I want to get the same benefits of formatting in iA Writer if I choose to draft my content there, and iA Writer does indeed parse markdown footnotes as well as highlights.
+
+[^1]: See [issue 70](https://github.com/markdoc/markdoc/issues/70) and my own [pull request 40](https://github.com/markdoc/markdoc/pull/40) in the Markdoc repo for more details.
