@@ -45,6 +45,22 @@ Migrating my existing site to a solution based on Astro and Keystatic was pretty
 
 The one thing that Astro + Keystatic's Markdoc implementations lacked, however, were support for footnotes and also highlights or mark elements. The Markdoc team does not favour augmenting their parser to parse these items, preferring instead for users of Markdoc to write their own custom tags.[^1]
 
-I am not in favour of this approach for two reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) I want to get the same benefits of formatting in iA Writer if I choose to draft my content there, and iA Writer does indeed parse markdown footnotes as well as highlights.
+I am not in favour of this approach for two reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) I want to get the same benefits of formatting in iA Writer if I choose to draft my content there, and iA Writer does indeed parse markdown footnotes as well as highlights. Here's an example of what I'm talking about… the way iA Writer interprets markdown is how I also want markdown represented on my site, and if I open a Markdoc file to edit in iA Writer, I want to see the same renderings for highlights and footnotes.
+
+![Editing a post in iA Writer](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.40.34%20PM.png)
+
+You'll notice on my site that I succeeded in getting this result without custom Markdoc tags, and to do that I took some of my custom parsing logic from my old site and ported it into a library called [@nvanexan/markdoc-extensions](https://www.npmjs.com/package/@nvanexan/markdoc-extensions). This package just has a simple parser that parses highlights and footnotes from a Markdoc file. I simply import this package into my new site repo, and [patch-package](https://www.npmjs.com/package/patch-package) the [@astrojs/markdoc](https://www.npmjs.com/package/@astrojs/markdoc) library, subbing in my extended parser for the vanilla Markdoc parser. Works like a charm.
+
+![Screenshot showing highlights and footnotes on my site](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%205.00.25%20PM.png)
+
+## Results and Performance
+
+I am very happy with the result. I now have a nice CMS-like editing experience when I want it, with the flexibility of still being able to edit and author content in my repo directly even without Keystatic, because it's just Markdoc at the end of the day. Resilience!
+
+What about performance? I am thrilled to say that the super awesome lighthouse scores I achieved 2 years ago when I ripped out Next.JS and MDX and replaced with my own Markdoc solution are still maintained. Here's a comparison.\
+
+![2022 site score - custom Markdoc solution](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.57.05%20PM.png)
+
+![2024 site score - with Astro + Keystatic + Markdoc all working together](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.56.47%20PM.png)
 
 [^1]: See [issue 70](https://github.com/markdoc/markdoc/issues/70) and my own [pull request 40](https://github.com/markdoc/markdoc/pull/40) in the Markdoc repo for more details.
