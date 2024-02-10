@@ -14,7 +14,7 @@ A couple of years ago I ripped out [Next.JS](https://nextjs.org/) and [MDX](http
 
 Everything so far has worked wonderfully. I write my posts in markdown either in [iA Writer](https://ia.net/writer) or directly on [GitHub](https://github.com/) . The changes I make against the GitHub repo automatically trigger a new [Vercel](https://vercel.com/) build and deployment. The build and deployment takes < 1 minute. Just commit a new Markdoc file to the repo and you have a new blog post. Simple and effective.
 
-What I loved about this solution was that I wrote the build scripts, compiler, templates, etc. myself and did not have to rely on hardly any libraries / frameworks for implementation. I am a minimalist. My site was about as minimal as it gets. There was no third party libraries to maintain other than Markdoc, and honestly I could never have updated that library and it would have been fine. This made my code very resilient to changes. And to me that's a huge win. The less tooling you use, the less there is to maintain, the more the solution will last amidst all the new hotness that may surface in web dev land.
+What I loved about this solution was that I wrote the build scripts, compiler, templates, etc. myself and did not have to rely on hardly any libraries / frameworks for implementation. I am a minimalist. My site was about as minimal as it gets. There was no third party libraries to maintain other than Markdoc, and honestly I could never have updated that library and it would have been fine. This made my code very resilient to changes. And to me that's a huge win. The less tooling I use, the less there is to maintain, the more the solution will last amidst all the new hotness that may surface in web dev land one day and be gone the next.
 
 But there's been a few pain points:
 
@@ -42,9 +42,9 @@ Here's a quick example of what it looks like editing this very post in Keystatic
 
 ## Bringing It All Together
 
-Migrating my existing site to a solution based on [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/) was pretty straightforward. I created a new repo based on the [Keystatic Astro quick start](https://keystatic.com/docs/installation-astro). I then set up my Keystatic schemas and copied over my existing Markdoc files. This was mostly just a matter of copy-paste, with a couple of tweaks to some frontmatter fields. Resilient technologies ftw!
+Migrating my existing [Markdoc](https://markdoc.dev/) site to a solution based on [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/) was pretty straightforward. I created a new repo based on the [Keystatic Astro quick start](https://keystatic.com/docs/installation-astro). I then set up my Keystatic schemas and copied over my existing Markdoc files. This was mostly just a matter of copy-paste, with a couple of tweaks to some frontmatter fields. Resilient technologies ftw!
 
-The one thing that Astro + Keystatic's Markdoc implementations lacked, however, were support for footnotes and also highlights or mark elements. The Markdoc team does not favour augmenting their parser to parse these items, preferring instead for users of Markdoc to write their own custom tags.[^1]
+The one thing that Astro + Keystatic's Markdoc implementations lacked, however, were support for parsing footnotes and highlights. The Markdoc team does not favour augmenting their parser to parse these items, preferring instead for users of Markdoc to write their own custom tags.[^1]
 
 I am not in favour of this approach for three reasons: (1) I find Markdoc tag syntax less ergonomic than basic markdown syntax; (2) the Keystatic approach to dealing with custom tags inside of a rich content editor in the CMS, via its [componentBlocks API](https://keystatic.com/docs/fields/document#component-blocks), is a bit too rudimentary for my liking at this point; and (3) the way iA Writer renders markdown in its app is how I also render markdown on my site, and so if I open a Markdoc file in iA Writer for content authoring or editing, I want to see the same renderings for highlights and footnotes.
 
@@ -60,7 +60,7 @@ I succeeded in getting my desired result without custom Markdoc tags by taking t
 
 I am very happy with the results of this experiment. I now have a nice CMS-like editing experience when I want it, with the flexibility of still being able to edit and author content in my repo directly even without Keystatic, because it's just Markdoc at the end of the day. Resilience!
 
-What about performance? I am thrilled to say that the super awesome lighthouse scores I achieved two years ago when I ripped out Next.JS and MDX and replaced with my own Markdoc solution are still maintained. Here's a comparison of all three versions of this site (Next.JS, Markdoc custom, Astro + Markdoc).
+What about performance? I am thrilled to see that ==the lighthouse scores I achieved two years ago when I ripped out Next.JS and MDX and replaced with my own Markdoc solution are still maintained==. Here's a comparison of all three versions of this site (Next.JS, Markdoc custom, Astro + Markdoc).
 
 ![2019 site - using Next.JS and MDX](/images/posts/astro-keystatic-markdoc/old-site-desktop.webp)
 
