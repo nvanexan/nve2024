@@ -1,6 +1,7 @@
 ---
 import NveFootnotes from "../components/NveFootnotes.astro";
 import NveToc from "../components/NveToc.astro";
+import ArticleFooter from "../components/ArticleFooter.astro";
 import "../styles.css";
 
 export interface Props {
@@ -41,6 +42,7 @@ const fallbackImageUrl = `${baseUrl}/nve-social-logo.png`;
   <body>
     <div class="app post">
       <slot />
+      <ArticleFooter />
     </div>
     <NveToc />
     <NveFootnotes />

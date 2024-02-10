@@ -54,6 +54,15 @@
       });
 
       this.container?.appendChild(list);
+
+      const backLink = document.createElement("a");
+      backLink.setAttribute("href", "/writing");
+      backLink.textContent = "← Back to Writing";
+      backLink.style.textDecoration = "none";
+      backLink.style.fontSize = "0.85rem";
+      backLink.style.backgroundImage = "none";
+      backLink.style.boxShadow = "none";
+      this.container?.appendChild(backLink);
     }
 
     /*
