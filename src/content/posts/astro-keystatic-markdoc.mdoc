@@ -38,7 +38,7 @@ I was happy to discover that others with a great deal more money and time than m
 
 Here's a quick example of what it looks like editing this very post in Keystatic:
 
-![Writing a blog post in Keystatic](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.24.58%20PM.png)
+![Writing a blog post in Keystatic](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.24.58%20PM.webp)
 
 ## Bringing It All Together
 
@@ -50,11 +50,11 @@ I am not in favour of this approach for three reasons: (1) I find Markdoc tag sy
 
 Here's an example of how iA Writer interprets and renders highlights and footnotes...
 
-![Editing a post in iA Writer](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.40.34%20PM.png)
+![Editing a post in iA Writer](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.40.34%20PM.webp)
 
 I succeeded in getting my desired result without custom Markdoc tags by taking the custom parsing logic I wrote for my existing site and publishing it as an NPM package ([@nvanexan/markdoc-extensions](https://www.npmjs.com/package/@nvanexan/markdoc-extensions)). This package just has a simple parser that extends the existing Markdoc parser with optional support to also parse highlights and footnotes. I simply import this package into my new site's repo, and then [patch-package](https://www.npmjs.com/package/patch-package) the [@astrojs/markdoc](https://www.npmjs.com/package/@astrojs/markdoc) library, substituting my extended parser for the vanilla Markdoc parser. Works like a charm.
 
-![Screenshot showing highlights and footnotes on my site](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%205.00.25%20PM.png)
+![Screenshot showing highlights and footnotes on my site](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%205.00.25%20PM.webp)
 
 ## Results and Performance
 
@@ -64,9 +64,9 @@ What about performance? I am thrilled to say that the super awesome lighthouse s
 
 ![2019 site - using Next.JS and MDX](/images/posts/astro-keystatic-markdoc/old-site-desktop.webp)
 
-![2022 site score - custom Markdoc solution](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.57.05%20PM.png)
+![2022 site score - custom Markdoc solution](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.57.05%20PM.webp)
 
-![2024 site score - with Astro + Keystatic + Markdoc all working together](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.56.47%20PM.png)
+![2024 site score - with Astro + Keystatic + Markdoc all working together](/images/posts/astro-keystatic-markdoc/Screenshot%202024-02-09%20at%204.56.47%20PM.webp)
 
 ## Concluding Thoughts
 
