@@ -565,8 +565,7 @@ a,
   background-position: 0% 100%;
   background-repeat: no-repeat;
   background-size: 100% 1px;
-  transition: all 0.3s;
-  text-shadow: 0.1em 0 var(--bg), -0.1em 0 var(--bg);
+  transition: background-size 0.3s;
 }
 
 a:hover,
