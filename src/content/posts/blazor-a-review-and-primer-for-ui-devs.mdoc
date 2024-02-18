@@ -228,7 +228,7 @@ public class HelloWorldTest : TestContext
 }
 ```
 
-In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the [jest-axe](https://www.npmjs.com/package/jest-axe) library to assert `expect(componentHtml).toHaveNoViolations()`, you currently have to manually write tests for accessibility related functionality you want to test in your components.
+In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the [jest-axe](https://www.npmjs.com/package/jest-axe) library to assert that a component has no accessibility violations, you currently have to manually write tests for accessibility related functionality you want to test in your components.
 
 ## Accessibility
 
