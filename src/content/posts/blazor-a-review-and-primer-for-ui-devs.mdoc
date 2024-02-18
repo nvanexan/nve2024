@@ -228,11 +228,11 @@ In practice, I have found bUnit has some limitations relative to React Testing L
 
 ## Accessibility
 
-Accessibility is a hot button topic at the moment. I have strong opinions about it. And those opinions reduce to this: we are obligated as software developers to make products that are usable by everyone, of every ability, however limited. UIs that aren’t usable by those with disabilities deny those people their basic human rights. We cannot abide such outcomes.
+Accessibility is a hot button topic at the moment. I have strong opinions about it. And those opinions reduce to this: we are obligated as software developers to make products that are usable by everyone, of every ability. UIs that aren’t usable by those with disabilities deny those people their basic human rights. We cannot abide such outcomes.
 
-With Blazor being based on .NET and C#, you may be wondering what its a11y story looks like. In general, I would say that Blazor itself as a technology does not limit the development of accessible web applications. You can use proper standard elements like `<button>`, you can add aria attributes to elements, you can add event handlers to control interactions on key presses, and you can set focus to elements (with the help of the JS interop!).
+With Blazor being based on .NET and C#, you may be wondering what its a11y story looks like. In general, I would say that Blazor itself as a technology does not prevent the development of accessible web applications, but it doesn't always make it easy either. You can use proper standard elements like `<button>`, you can add aria attributes to elements, you can add event handlers to control interactions on key presses, and you can set focus to elements. Some of this last mile work does require use of the JS interop, though, which can be a bit clunky to use.
 
-But a word of caution. If you’re looking to leverage an existing third-party component library for Blazor, you are going to find the options available at this time to be sorely lacking, particularly when it comes to accessibility. In my own review of the leading UI component libraries for Blazor back in October 2023, I found not one delivered WCAG AA compliant components. Many failed even basic keyboard or screen-reading implementation tests.
+An additional caution. If you’re looking to leverage an existing third-party component library for Blazor, you are going to find the options available at this time to be sorely lacking, particularly when it comes to accessibility. In my own review of the leading UI component libraries for Blazor back in October 2023, I found not one delivered WCAG AA compliant components. Many failed even basic keyboard or screen-reading implementation tests.
 
 | Library | Accessible? | Notes |
 |:--|:--|:--|
