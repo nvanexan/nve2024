@@ -95,7 +95,7 @@ All three of these elements can be combined in a single razor page to author a c
 
 This is a simple component that renders a callout on a screen. It takes a parameter called Content of RenderFragment type and renders that within a containing div, that attaches styles to the containing callout box.
 
-There are two things to notice here. The first is that we’re using specific syntax for C# and razor files to do the rendering. This is great if you’re a C# dev because you can use the syntax you’re already familiar with. This is less great if you’re coming in from the JavaScript ecosystem, as it requires you to familiarize yourself with yet-another syntax that is specific to this technology.
+There are two things to notice here. The first is that we’re using specific syntax for C# and razor files to do the rendering. This is great if you’re a C# dev because you can use the syntax you’re already familiar with. 
 
 I call this point out because one of the main reasons I think React became so popular was because its templating language, JSX, had you writing fairly standard HTML and JavaScript all in one file. I can remember immediately preferring this over what Angular or Vue had to offer, with specific syntax for their templates (e.g. `ngFor`). You didn’t need to learn any new syntax or language to write JSX. For example, if you want to render a list of items, you just map an array `items.map(item => <li>{item.name}</li>)`.
 
@@ -124,10 +124,6 @@ With Visual Studio Code, there are certain extensions you’re going to need to 
 - The .NET Install Tool (installs and manages different versions of the .NET SDK and Runtime)
 
 Having said that, I can also say that the developer experience using Visual Studio Code is far less optimal than using Visual Studio. And in some cases is just quite awful. For example, I have found that after an hour or so of coding, the linter for C# and razor files becomes slow and dysfunctional. The linter seems to struggle in particular with razor files, marking many things with phantom errors or warnings that simply aren’t there when you run a fresh `dotnet clean` and `dotnet build`.
-
-Here’s an example of my VS Code struggling to understand anything about my razor file, with the C# extension having a meltdown in the corner.
-
-![Screenshot of my VS Code IDE with warnings and errors everywhere](/images/posts/blazor-a-review-and-primer-for-ui-devs/Screenshot%202024-02-17%20at%206.25.44%20PM.png)
 
 This is something that really needs to be fixed if Microsoft is hoping to gain traction among UI developers who, generally, are unlikely to have Visual Studio and unlikely to make the switch to it.[^5]
 
