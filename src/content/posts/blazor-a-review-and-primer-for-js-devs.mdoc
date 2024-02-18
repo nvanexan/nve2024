@@ -217,7 +217,7 @@ Here’s a mapping of the unit testing technologies in the Blazor and React ecos
 - Jest snapshot testing
 ---
 - a11y testing
-- -
+- n/a
 - Jest-Axe
 {% /table %}
 
@@ -258,13 +258,13 @@ With Blazor being based on .NET and C#, you may be wondering what its a11y story
 
 But a word of caution. If you’re looking to leverage an existing third-party component library for Blazor, you are going to find the options available at this time to be sorely lacking, particularly when it comes to accessibility. In my own review of the leading UI component libraries for Blazor back in October 2023, I found not one delivered WCAG AA compliant components. Many failed even basic keyboard or screen-reading implementation tests.
 
-| Component Library | Is Accessible? | Notes |\
-|:--|:--|:--|\
-| [MudBlazor](https://mudblazor.com/docs/overview) | No | Roles, aria attributes, keyboard and focus support all lacking  |\
-| [MatBlazor](https://www.matblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |\
-| [AntBlazor](https://antblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |\
-| [Blazorise](https://blazorise.com/docs) | No | A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc. |\
-| [Radzen](https://blazor.radzen.com/) | No | a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.) |\
+| Component Library | Is Accessible? | Notes |
+|:--|:--|:--|
+| [MudBlazor](https://mudblazor.com/docs/overview) | No | Roles, aria attributes, keyboard and focus support all lacking  |
+| [MatBlazor](https://www.matblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
+| [AntBlazor](https://antblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
+| [Blazorise](https://blazorise.com/docs) | No | A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc. |
+| [Radzen](https://blazor.radzen.com/) | No | a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.) |
 | [Telerik](https://docs.telerik.com/blazor-ui/introduction) |  Claims to be | A lot better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components, making it difficult to correct defects without support tickets. |
 
 I’m not entirely surprised by this outcome. In an ecosystem consisting primarily of back-end developers, the level of attention to UI concerns regarding a11y just isn’t there. Hopefully, over time, this will improve. But for now, the existing UI library ecosystem for Blazor is alarmingly ableist when compared to something like [Shoelace](https://shoelace.style/).
