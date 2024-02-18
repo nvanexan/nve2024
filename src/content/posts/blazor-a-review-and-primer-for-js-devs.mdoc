@@ -187,7 +187,7 @@ One important example is [Storybook](https://storybook.js.org/). Storybook is a 
 
 ![](/images/posts/blazor-a-review-and-primer-for-js-devs/2024-02-18%2009.42.02.gif)
 
-Most C# devs I’ve talked to about this have no idea what Storybook is, and that’s understandable, as they historically have not built a lot of UI. But those who have spent time building out component libraries and design systems understand the value of this tool and related tooling. Most devs understand that design system level components should be isolated and packable as a package for other teams to consume. And that works fine in Blazor. Just create a new razor class library and publish it on NuGet and you’re golden. But the next hurdle is... how do you document those components, and make them available for other teams to understand and play with? Further, how do you test those components for different scenarios, such as dark mode, accessibility, and so on? And what tooling are you putting in your CI pipeline to catch regressions for your components across their myriad states? In the JavaScript ecosystem, Storybook([https://storybook.js.org/](https://storybook.js.org/)) and [Chromatic](https://www.chromatic.com/) are important tools that have made building and testing component libraries, and sharing their documentation and APIs, a lot easier, and so much so that many organizations have developed “Story-Driven Development” as a practice.
+Most C# devs I’ve talked to about this have no idea what Storybook is, and that’s understandable, as they historically have not built a lot of UI. But those who have spent time building out component libraries and design systems understand the value of this tool and related tooling. Most devs understand that design system level components should be isolated and packable as a package for other teams to consume. And that works fine in Blazor. Just create a new razor class library and publish it on NuGet and you’re golden. But the next hurdle is... how do you document those components, and make them available for other teams to understand and play with? Further, how do you test those components for different scenarios, such as dark mode, accessibility, and so on? And what tooling are you putting in your CI pipeline to catch regressions for your components across their myriad states? In the JavaScript ecosystem, [Storybook](https://storybook.js.org/) and [Chromatic](https://www.chromatic.com/) are important tools that have made building and testing component libraries, and sharing their documentation and APIs, a lot easier, and so much so that many organizations have developed “Story-Driven Development” as a practice.
 
 Currently, if you are looking for a Storybook-like solution, the only example I could find is a project created by a developer and maintained by a couple of others called [BlazingStory](https://github.com/jsakamoto/BlazingStory/). It does not have feature parity with Storybook and [the Storybook team has no plans to support Blazor](https://github.com/storybookjs/storybook/issues/13731#issuecomment-1164485710) at this time.
 
@@ -195,9 +195,31 @@ All of this could change over time, to be sure. But at the moment, if you’re c
 
 ## Testing
 
-Unit testing capabilities in Blazor are fairly good and should be familiar to developers coming from the JavaScript ecosystem. In .NET you can choose your unit testing framework of your choice, and then you can add a library called `bUnit` to layer on top of that as your actual testing library for components.
+Unit testing capabilities in Blazor are fairly good and should be familiar to developers coming from the JavaScript ecosystem. In .NET you can choose your unit testing framework of your choice, and then you can add a library called [bUnit](https://bunit.dev/index.html) to layer on top of that as your actual testing library for components.
 
 Here’s a mapping of the unit testing technologies in the Blazor and React ecosystems:
+
+{% table %}
+- Technology
+- Blazor
+- React
+---
+- Unit test runner
+- xUnit, NUnit, MSTest
+- Jest
+---
+- Testing library
+- bUnit
+- React Testing Library
+---
+- Snapshot testing
+- Verify
+- Jest snapshot testing
+---
+- a11y testing
+- -
+- Jest-Axe
+{% /table %}
 
 |  | Blazor | React |\
 |:--|:--|:--|\
@@ -206,7 +228,7 @@ Here’s a mapping of the unit testing technologies in the Blazor and React ecos
 | Snapshot testing | Verify | Jest snapshots |\
 | A11Y testing | - | Jest-Axe |
 
-bUnit is a capable testing library and its format will be familiar to those with experience using React Testing Library. The aim in both cases is to test components as they are rendered, and how they would be used by a user.
+[bUnit](https://bunit.dev/index.html) is a capable testing library and its format will be familiar to those with experience using [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). The aim in both cases is to test components as they are rendered, and how they would be used by a user.
 
 ```
 using Xunit;
@@ -226,7 +248,7 @@ public class HelloWorldTest : TestContext
 }
 ```
 
-In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the jest-axe library to assert `expect(componentHtml).toHaveNoViolations()`, you currently have to manually write tests for accessibility related functionality you want to test in your components.
+In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the [jest-axe](https://www.npmjs.com/package/jest-axe) library to assert `expect(componentHtml).toHaveNoViolations()`, you currently have to manually write tests for accessibility related functionality you want to test in your components.
 
 ## Accessibility
 
