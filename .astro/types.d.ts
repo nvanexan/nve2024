@@ -372,9 +372,9 @@ declare module 'astro:content' {
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".mdoc"] };
-"blazor-a-review-and-primer-for-js-devs.mdoc": {
-	id: "blazor-a-review-and-primer-for-js-devs.mdoc";
-  slug: "blazor-a-review-and-primer-for-js-devs";
+"blazor-a-review-and-primer-for-ui-devs.mdoc": {
+	id: "blazor-a-review-and-primer-for-ui-devs.mdoc";
+  slug: "blazor-a-review-and-primer-for-ui-devs";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">
