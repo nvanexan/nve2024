@@ -340,6 +340,20 @@ declare module 'astro:content' {
   collection: "changelogs";
   data: InferEntrySchema<"changelogs">
 } & { render(): Render[".mdoc"] };
+"2023-12.mdoc": {
+	id: "2023-12.mdoc";
+  slug: "2023-12";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2024-01.mdoc": {
+	id: "2024-01.mdoc";
+  slug: "2024-01";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
 };
 "now": {
 "content.mdoc": {
@@ -354,6 +368,13 @@ declare module 'astro:content' {
 "astro-keystatic-markdoc.mdoc": {
 	id: "astro-keystatic-markdoc.mdoc";
   slug: "astro-keystatic-markdoc";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdoc"] };
+"blazor-a-review-and-primer-for-ui-devs.mdoc": {
+	id: "blazor-a-review-and-primer-for-ui-devs.mdoc";
+  slug: "blazor-a-review-and-primer-for-ui-devs";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">

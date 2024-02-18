@@ -292,6 +292,12 @@ section {
   margin: 0;
 }
 
+@media (prefers-color-scheme: light) {
+  .article-summary {
+    color: var(--gray9);
+  }
+}
+
 @media (min-width: 1100px) {
   .article-footer {
     margin-top: 48px;
@@ -366,7 +372,7 @@ ul {
 }
 
 ul ul {
-  margin: 0 0 0 1rem;
+  margin: 1rem;
 }
 
 ul li:before {
@@ -408,6 +414,12 @@ ol li::marker {
 .meta p {
   color: var(--gray11);
   margin: 0;
+}
+
+@media (prefers-color-scheme: light) {
+  .meta p {
+    color: var(--gray9);
+  }
 }
 
 @media (max-width: 1100px) {
@@ -592,6 +604,31 @@ a:hover,
 
 .post .heading-link:hover {
   background-size: 100% 1px;
+}
+
+/* ---------------------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+td,
+th {
+  padding: 0.75rem;
+}
+
+td {
+  border: solid 1px var(--gray5);
+  font-size: 0.9rem;
+  line-height: 1.5em;
+}
+
+@media (prefers-color-scheme: light) {
+  td {
+    border: solid 1px var(--gray12);
+  }
 }
 
 /* ---------------------------------- */

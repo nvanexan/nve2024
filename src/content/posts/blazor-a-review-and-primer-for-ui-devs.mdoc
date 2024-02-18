@@ -1,0 +1,276 @@
+---
+title: 'Blazor: A Review and Primer for UI Devs'
+description: Opinionated notes from the field
+socialImageUrl: /nve-social-logo.png
+date: '2024-02-18'
+published: true
+---
+For the past few months I’ve been working on a client project that leverages Microsoft’s [Blazor](https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-8.0) technology for building web applications. The following are some notes and thoughts I have about the technology, from the perspective of a UI developer previously focused on the JavaScript ecosystem.
+
+## What is Blazor?
+
+[Blazor](https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-8.0) is a framework for building interactive client-side web UI with [.NET](https://learn.microsoft.com/en-us/dotnet/core/introduction). You can liken it to [React](https://react.dev/), though a better analogue might be [Next.JS](https://nextjs.org). It is much larger than a rendering library; it is a full framework, complete with its own opinions and technologies for routing, form handling, server-side rendering and much more. Like other modern front-end frameworks, Blazor envisions composing UI in a component-based architecture.
+
+The primary difference between Blazor and other frameworks is that you write your UI in [C#](https://learn.microsoft.com/en-us/dotnet/csharp/), a statically typed language used primarily for back-end development.
+
+Blazor components are .NET C# classes built into .NET assemblies. The component class is usually written in the form of a Razor[^1] markup page with a .razor file extension (e.g. `Button.razor`).[^2]
+
+Here’s an example of a Blazor component defined in a Razor page:
+
+```
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+```
+
+Blazor can run (and in my view is intended primarily to run) on the server.[^3] This makes Blazor more like [Next.JS](https://nextjs.org/) than simple client-side React. As with Next.JS, this changes the designs and patterns you may use for development. For example, you don’t need to call an API when you can query the database directly and pull back the data *before* the component is rendered.
+
+That sets the table. Let’s move on to the meal. In the next sections I’m going to delve into some features of Blazor and the trade-offs I’ve encountered working with it in the field.
+
+## C# vs. JS / TS
+
+There are important differences between C# and JavaScript. If you’re coming to Blazor from the JavaScript ecosystem, the differences that will be most relevant to you are:
+
+- **Type System:** C# is a statically-typed language, meaning you have to declare the type of each variable and the compiler checks types at compile-time.
+- **Syntax and Structure**: C# syntax is similar to Java and C++, with a curly brace syntax and a strong emphasis on object-oriented programming principles vs the prototypal / functional nature of JavaScript.
+- **Concurrency Model**: C# has built-in support for multithreading and asynchronous programming through features like async/await and the Task Parallel Library (TPL).
+
+Most JS devs are writing [TypeScript](https://www.typescriptlang.org/) these days. And so many of the differences in terms of static typing are increasingly negligible, as production grade JS is increasingly looking like C#. But whereas TypeScript allows for escape hatches to apply greater or lesser type safety as needed, C# does not.
+
+Practically, this means you have great type safety at compile time. This makes the developer experience enjoyable in certain contexts. You certainly detect a lot more errors or breaking changes at compile time, which is useful particularly when refactoring. You can also fairly easily rename classes and namespaces, again useful when refactoring.
+
+In practice, however, I’ve found that if you need to build a solution or proof of concept quickly, Blazor and its use of C# will be a bit of an added drag on your velocity. Because the language is less flexible, you often have to rename or move things around. You need to create interfaces, or create a new parent class to inherit from, and so on. You spend a lot more time taming OOP.
+
+## Component Ergonomics
+
+Building components in Blazor is similar to building components in other frameworks. Components consist of razor templates for rendering HTML, C# classes for writing component  logic, and css files for writing styles.
+
+All three of these elements can be combined in a single razor page to author a component. Here’s an example:
+
+```
+@namespace App.Common.Callouts
+
+<div class="@($"app-callout {Variant?.ToString().ToLower()}")">
+    @Content
+</div>
+
+@code {
+    [Parameter] public RenderFragment? Content { get; set; }
+    [Parameter] public Variant? Variant { get; set; }
+
+    public enum Variant
+    {
+        Error,
+        Warning,
+        Notice
+    }
+}
+
+<style>
+	.app-callout {
+		border: solid 1px var(--app-colors-light-grey);
+		background: var(--app-colors-white);
+		padding: 1rem;
+	}
+	
+	.app-callout.error {
+		border-color: var(--app-colors-red);
+		background: var(--app-colors-light-red);
+	}
+</style>
+```
+
+This is a simple component that renders a callout on a screen. It takes a parameter called Content of RenderFragment type and renders that within a containing div, that attaches styles to the containing callout box.
+
+There are two things to notice here. The first is that we’re using specific syntax for C# and razor files to do the rendering. This is great if you’re a C# dev because you can use the syntax you’re already familiar with. This is less great if you’re coming in from the JavaScript ecosystem, as it requires you to familiarize yourself with yet-another syntax that is specific to this technology.
+
+I call this point out because one of the main reasons I think React became so popular was because its templating language, JSX, had you writing fairly standard HTML and JavaScript all in one file. I can remember immediately preferring this over what Angular or Vue had to offer, with specific syntax for their templates (e.g. `ngFor`). You didn’t need to learn any new syntax or language to write JSX. For example, if you want to render a list of items, you just map an array `items.map(item => <li>{item.name}</li>)`.
+
+Razor has its own rules and syntax because it needs to work with C#, so in this sense the appeal of it is going to depend on how familiar those domain-specific rules and syntax are to you, and how much you want to commit to learning yet-another way to iterate a list of items in a template, or do string interpolation, and so on. The upside, however, is what you are writing is C#. So as long as you’re down for learning C#, the razor templating will fit in pretty well along your journey without getting in your way, in the same way JSX tries to get out of your way of writing templates with JS.
+
+The second thing to notice is that while all the constituent elements of a component (template, logic, styles) *can* be written in a single `.razor` file, in practice they are commonly not, and instead are separated into three files:
+
+- A `.razor` file for the template and binding to variables in the `.razor.cs` file
+- A `.razor.cs` file for handling the code and class logic of the component
+- A `.razor.css` file for handing the styling of the component
+
+The reason for this is because without a corresponding `.razor.cs` file, Visual Studio and Visual Studio Code struggle with IntelliSense and namespaces with razor files.  Further, if you want your styles to be scoped to the component (i.e. [css isolation](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation?view=aspnetcore-8.0)), you need to put them in a separate .css file.
+
+The key takeaway here is that if you want CSS isolation and you want your developer experience to work properly, you have to break your components into three separate files. Some developers prefer the separation of these three concerns into separate files, so I’ll let you decide how you feel about that. From my perspective, however, this is a less optimal outcome compared with other technologies that understand that these three concerns actually work in unison to deliver UI, and so should be kept in the same file, particularly when there isn’t much logic to the component.
+
+## The Developer Experience in VS Code
+
+If you’re coming to Blazor from the JavaScript ecosystem, it is likely you are not using [Visual Studio](https://visualstudio.microsoft.com/) as your IDE, which is what professional C# developers use.
+
+I can say as a Mac user and JavaScript / TypeScript developer that you definitely can write and build Blazor apps without Visual Studio. You can use the [.NET Core CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/) to run, debug, watch, test, and build your projects or solutions, and it works very well. You can then also use [Visual Studio Code](https://code.visualstudio.com/) to write your app.[^4]
+
+With Visual Studio Code, there are certain extensions you’re going to need to write C# for Blazor apps. These include:
+
+- The C# extension (base language support for C#)
+- The C# Dev Kit (helps you manage your code with a solution explorer and test your code with integrated unit test discovery and execution, elevating your C# development experience)
+- The .NET Install Tool (installs and manages different versions of the .NET SDK and Runtime)
+
+Having said that, I can also say that the developer experience using Visual Studio Code is far less optimal than using Visual Studio. And in some cases is just quite awful. For example, I have found that after an hour or so of coding, the linter for C# and razor files becomes slow and dysfunctional. The linter seems to struggle in particular with razor files, marking many things with phantom errors or warnings that simply aren’t there when you run a fresh `dotnet clean` and `dotnet build`.
+
+Here’s an example of my VS Code struggling to understand anything about my razor file, with the C# extension having a meltdown in the corner.
+
+![Screenshot of my VS Code IDE with warnings and errors everywhere](/images/posts/blazor-a-review-and-primer-for-js-devs/Screenshot%202024-02-17%20at%206.25.44%20PM.png)
+
+This is something that really needs to be fixed if Microsoft is hoping to gain traction among UI developers who, generally, are unlikely to have Visual Studio and unlikely to make the switch to it.[^5]
+
+## Routing and Navigation
+
+Routing in Blazor is quite simple and quite good. You simply add `@page` directives to a Blazor component, and boom, you have a route.
+
+```
+@page "/blazor-route"
+@page "/different-blazor-route"
+
+<PageTitle>Routing</PageTitle>
+
+<h1>Routing Example</h1>
+
+<p>
+    This page is reached at either <code>/blazor-route</code> or 
+    <code>/different-blazor-route</code>.
+</p>
+```
+
+There’s support for parameters, query params, and so on, and it’s very easy to integrate.
+
+There’s also great support out of the box for auth guarding. Want to protect a route? Just add an authorization attribute.
+
+```
+@attribute [Authorize(Roles = "Admin")]
+```
+
+The one thing you may struggle with here is code organization. Because any component can be a “page” with the `@page` attribute, the distinction between a “page” and any other component becomes blurry. However, this was always true in React where everything is a component. So, you and your team will have to just decide if / when / how to separate pages from other kinds of components.
+
+## JS Interop
+
+One aspect of Blazor that UI devs may find amusing is a feature called [JS interop](https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-8.0). With JS interop, a Blazor app can invoke JavaScript functions from .NET methods and .NET methods from JS functions.
+
+The JS interop feature is a concession that to be a web developer you still need to know and write JavaScript. It’s how we talk to the browser. It’s how we communicate with the DOM.
+
+Similar to other Frameworks, Blazor assumes you won’t need to interact with the DOM directly and generally advises against doing so. But it also assumes you’ll need JS very minimally, and likely won’t be writing much yourself.
+
+This second assumption results in a developer experience that is less than ideal. To be sure, you can import and reference third party JS modules and talk to them in your C# code. But the experience of doing so can be cumbersome.
+
+The same is true if you are writing your own JavaScript. For example, let’s say you’re asked to implement a tooltip component. You can achieve a basic level of functionality with just HTML/CSS but for more advanced edge cases you’re going to need to get into window viewport sizes and collision detection to do things like dynamically move a tooltip to the other side when the browser width moves below a certain breakpoint. You will likely need use of the [window:matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and the [Element:getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) API. And because the creators of Blazor don’t think you will or should be writing much JavaScript, there’s no helpful defaults when you scaffold a new application about using TypeScript instead of JS, having a test harness for your TS/JS related code, and so on.[^6] You have to scaffold that yourself. At which point, once you start scaffolding a new TS repo with Jest for unit testing, etc. you may start to wonder... what have I really gained here?
+
+This is a recurring question I find myself asking with Blazor. Why does this exist? The aim, primarily, is to make C# devs productive on the UI section of the stack. But if, to build good UI, you need to leverage TS/JS to communciate with the browser, you soon realize that you need TS/JS developers and a codebase that enables those capabilities. To be sure, you can leverage existing libraries, including client-side only web components. But the fact remains: the framework you’ve chosen to build UI treats the language you use to communicate with the browser as a second-class citizen, an afterthought, an edge case. Which, from a developer experience perspective, kind of sucks.
+
+## Ecosystem
+
+Blazor is built on .NET and so as a developer you have access to whatever is available in that ecosystem. This can be positive and negative.
+
+For things like security, or validation, or auto-mapping of objects, there’s libraries that exist in the .NET world that are awesome and a dream to use. And while you still need to import packages from a package manager, overall the developer experience is much better with [NuGet](https://www.nuget.org/) than it is with [NPM](https://www.npmjs.com/).
+
+The trouble with the Blazor ecosystem, however, is that it is relatively limited when it comes to UI development compared to the dramatic growth of libraries and tooling in the JavaScript ecosystem over the last 10-15 years.
+
+One important example is [Storybook](https://storybook.js.org/). Storybook is a frontend workshop for building UI components and pages in isolation. Thousands of teams use it for UI development, testing, and documentation. It’s open source and free. And it does not exist in the Blazor ecosystem.
+
+![Animated screenshot of Storybook](/images/posts/blazor-a-review-and-primer-for-js-devs/2024-02-18%2009.42.02.gif)
+
+Most C# devs I’ve talked to about this have no idea what Storybook is, and that’s understandable, as they historically have not built a lot of UI. But those who have spent time building out component libraries and design systems understand the value of this tool and related tooling. 
+
+Most devs understand that design system level components should be isolated and packable as a package for other teams to consume. And that works fine in Blazor. Just create a new razor class library and publish it on NuGet and you’re golden. But the next hurdle is... how do you document those components, and make them available for other teams to understand and play with? Further, how do you test those components for different scenarios, such as dark mode, accessibility, and so on? And what tooling are you putting in your CI pipeline to catch regressions for your components across their myriad states? 
+
+In the JavaScript ecosystem, [Storybook](https://storybook.js.org/) and [Chromatic](https://www.chromatic.com/) are important tools that have made building and testing component libraries, and sharing their documentation and APIs, a lot easier, and so much so that many organizations have developed “Story-Driven Development” as a practice.[^7]
+
+Currently, if you are looking for a Storybook-like solution, the only example I could find is a project created by a developer and maintained by a couple of others called [BlazingStory](https://github.com/jsakamoto/BlazingStory/). It does not have feature parity with Storybook and [the Storybook team has no plans to support Blazor](https://github.com/storybookjs/storybook/issues/13731#issuecomment-1164485710) at this time.
+
+All of this could change over time, to be sure. But at the moment, if you’re coming to Blazor from the JavaScript ecosystem, you are going to find the lack of some of this tooling a bit jarring.
+
+## Testing
+
+Unit testing capabilities in Blazor are fairly good and should be familiar to developers coming from the JavaScript ecosystem. In .NET you can choose your unit testing framework of your choice, and then you can add a library called [bUnit](https://bunit.dev/index.html) to layer on top of that as your actual testing library for components.
+
+Here’s a mapping of the unit testing technologies in the Blazor and React ecosystems:
+
+| Technology | Blazor | React |
+|:--|:--|:--|
+| Unit test runner | [xUnit](https://xunit.net/), [NUnit](https://nunit.org/), [MSTest](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest) | [Jest](https://jestjs.io/) |
+| Testing library | [bUnit](https://bunit.dev/) | [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) |
+| Snapshot testing | [Verify](https://github.com/VerifyTests/Verify) | [Jest snapshots](https://jestjs.io/docs/snapshot-testing) |
+| A11Y testing | - | [Jest-Axe](https://www.npmjs.com/package/jest-axe) |
+
+[bUnit](https://bunit.dev/index.html) is a capable testing library and its format will be familiar to those with experience using [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). The aim in both cases is to test components as they are rendered, and how they would be used by a user.
+
+```csharp
+using Xunit;
+using Bunit;
+
+public class HelloWorldTest : TestContext
+{
+  [Fact]
+  public void HelloWorldComponentRendersCorrectly()
+  {
+    // Act
+    var cut = RenderComponent<HelloWorld>();
+
+    // Assert
+    cut.MarkupMatches("<h1>Hello world from Blazor</h1>");
+  }
+}
+```
+
+In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the [jest-axe](https://www.npmjs.com/package/jest-axe) library to assert that a component has no accessibility violations, you currently have to manually write tests for accessibility related functionality you want to test in your components.
+
+## Accessibility
+
+Accessibility is a hot button topic at the moment. I have strong opinions about it. And those opinions reduce to this: we are obligated as software developers to make products that are usable by everyone, of every ability, however limited. UIs that aren’t usable by those with disabilities deny those people their basic human rights. We cannot abide such outcomes.
+
+With Blazor being based on .NET and C#, you may be wondering what its a11y story looks like. In general, I would say that Blazor itself as a technology does not limit the development of accessible web applications. You can use proper standard elements like `<button>`, you can add aria attributes to elements, you can add event handlers to control interactions on key presses, and you can set focus to elements (with the help of the JS interop!).
+
+But a word of caution. If you’re looking to leverage an existing third-party component library for Blazor, you are going to find the options available at this time to be sorely lacking, particularly when it comes to accessibility. In my own review of the leading UI component libraries for Blazor back in October 2023, I found not one delivered WCAG AA compliant components. Many failed even basic keyboard or screen-reading implementation tests.
+
+| Library | Accessible? | Notes |
+|:--|:--|:--|
+| [MudBlazor](https://mudblazor.com/docs/overview) | No | Roles, aria attributes, keyboard and focus support all lacking  |
+| [MatBlazor](https://www.matblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
+| [AntBlazor](https://antblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
+| [Blazorise](https://blazorise.com/docs) | No | A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc. |
+| [Radzen](https://blazor.radzen.com/) | No | a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.) |
+| [Telerik](https://docs.telerik.com/blazor-ui/introduction) |  Claims to be | A lot better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components, making it difficult to correct defects without support tickets. |
+
+I’m not entirely surprised by this outcome. In an ecosystem consisting primarily of back-end developers, the level of attention to UI concerns regarding a11y just isn’t there. Hopefully, over time, this will improve. But for now, the existing UI library ecosystem for Blazor is alarmingly ableist when compared to something like [Shoelace](https://shoelace.style/).
+
+Further, as mentioned above, the tooling for building accessible UI components is lacking. For example, in the JavaScript ecosystem, you have access to libraries and add-ons for your test runners like [jest-axe](https://www.npmjs.com/package/jest-axe) and [storybook-addon-a11y](https://storybook.js.org/addons/@storybook/addon-a11y) that can automate the testing of a number of accessibility related items in your unit tests or in your Storybook tests. To my knowledge, there aren’t such equivalents in Blazor’s ecosystem. Testing of accessibility is still primarily manual and / or part of end-to-end tests.
+
+This isn’t to say of course that the accessibility posture won’t improve in this ecosystem over time. But for now, these are some important limitations.
+
+## Conclusion
+
+Blazor is a pretty cool piece of technology and a capable framework for building web applications. Its strengths come from .NET and C#, which together make it both performant and production-grade with type safety that should also help make your codebase more resilient over time. If you have a team comprised primarily of C# developers, Blazor may be the right tool for you.
+
+Notwithstanding all that it has to offer as a technology, the framework lacks an ecosystem supportive of the needs UI devs encounter today when seeking to build accessible applications quickly.
+
+I am hopeful that this might change over time. The work on [BlazingStory](https://github.com/jsakamoto/BlazingStory/), for example, is something that is promising and also sorely needed in this ecosystem if Blazor is to be a real UI development technology. Over time, if more UI devs become involved in the Blazor ecosystem, I think it could become a platform for the delivery of web applications that is on par with what’s on offer by [Vercel](https://vercel.com) with [Next.JS](https://nextjs.org/) and others today. But as with all things, time and effort will be the final arbiter.
+
+[^1]: Razor is a syntax for combining HTML markup with C# code. Razor allows you to switch between HTML markup and C# in the same file with IntelliSense programming support in Visual Studio.
+
+[^2]: However, in practice, limitations with IntelliSense, namespacing and a poor developer experience in Visual Studio Code mean that .razor files typically contain basic templating for a component with the logic being placed in an accompanying partial class file (e.g. `Button.razor.cs`).
+
+[^3]: There is a client-side WASM mode if you want to return to early 2000s Macromedia Flash and have your users download large binaries before being able to see any content. Which is to say, that’s not likely something you want to reach for and not where the future of Blazor will be, in my view.
+
+[^4]: There is a [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/) IDE but it is being retired on August 31, 2024.
+
+[^5]: Given that Visual Studio for Mac is being deprecated this year, one would have to get a PC to use Visual Studio. I personally would find that frustrating. I currently use an M1 MacBook Air because it was the best hardware I could get for the money at the time: it is portable, light, powerful, and has a battery life that lets me code for 16 hours if I want to. There was no analogue on the PC market, and still today I don’t think most PC laptops hold up well compared to Apple Silicon processors. Asking developers to give up their hardware to get a better developer experience through a PC-only IDE like Visual Studio is, in my view, ~~delusional~~ ~~hostile~~ wishful thinking.
+
+[^6]: The Blazor documentation examples actually have you just dumping script tags on your base index.html that attach to the window object. Not exactly scalable.
+
+[^7]: See the notes from my [Changelog for October 2023](https://nick.vanexan.ca/changelog/2023-10), wherein I mentioned Stephanie Zeng's presentation on the use of this practice at [Rangle.io](https://rangle.io).
