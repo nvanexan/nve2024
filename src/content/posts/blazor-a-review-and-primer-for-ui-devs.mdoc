@@ -48,9 +48,11 @@ There are important differences between C# and JavaScript. If you’re coming to
 - **Syntax and Structure**: C# syntax is similar to Java and C++, with a curly brace syntax and a strong emphasis on object-oriented programming principles vs the prototypal / functional nature of JavaScript.
 - **Concurrency Model**: C# has built-in support for multithreading and asynchronous programming through features like async/await and the Task Parallel Library (TPL).
 
-Most JS devs are writing [TypeScript](https://www.typescriptlang.org/) these days. And so many of the differences in terms of static typing are increasingly negligible, as production grade JS is increasingly looking like C#. But whereas TypeScript allows for escape hatches to apply greater or lesser type safety as needed, C# does not.
+Many JS devs are actually writing [TypeScript](https://www.typescriptlang.org/) these days. And so many of the differences in terms of static typing are increasingly negligible, as production grade JS is increasingly looking like C#. But whereas TypeScript allows for escape hatches to apply greater or lesser type safety as needed, C# does not.
 
-Practically, this means you have great type safety at compile time. This makes the developer experience enjoyable in certain contexts. You certainly detect a lot more errors or breaking changes at compile time, which is useful particularly when refactoring. You can also fairly easily rename classes and namespaces, again useful when refactoring. But you will also spend a lot more time taming OOP and learning about how C# works within the context of .NET.[^4]
+Practically, this means you have great type safety at compile time. This makes the developer experience enjoyable in certain contexts. You certainly detect a lot more errors or breaking changes at compile time, which is useful particularly when refactoring. You can also fairly easily rename classes and namespaces, again useful when refactoring.
+
+But you will also spend a lot more time taming OOP and learning idiosyncrasies of how C# works within the context of .NET.[^4]
 
 ## Component Ergonomics
 
@@ -328,9 +330,9 @@ This isn’t to say of course that the accessibility posture won’t improve in 
 
 Blazor is a pretty cool piece of technology and a capable framework for building web applications. Its strengths come from .NET and C#, which together make it both performant and production-grade with type safety that should also help make your codebase more resilient over time. If you have a team comprised primarily of C# developers, Blazor may be the right tool for you.
 
-Notwithstanding all that it has to offer as a technology, the ecosystem it inhabits has less to offer UI devs than the existing JavaScript ecosystem particularly in tooling for design systems and accessibility.
+Notwithstanding all that it has to offer as a technology, the ecosystem it inhabits currently has less to offer UI devs than the existing JavaScript ecosystem, particularly in tooling for design systems and accessibility.
 
-I am hopeful that this might change over time. The work on [BlazingStory](https://github.com/jsakamoto/BlazingStory/), for example, is something that is promising and also sorely needed in this ecosystem if Blazor is to be a real UI development technology. Over time, if more UI devs become involved in the Blazor ecosystem, I think it could become a platform for the delivery of web applications that is on par with what’s on offer by [Vercel](https://vercel.com) with [Next.JS](https://nextjs.org/) and others today. But as with all things, time and effort will be the final arbiter.
+I am hopeful that this might change over time. But as with most things, time and effort will be the final arbiter.
 
 [^1]: Razor is a syntax for combining HTML markup with C# code. Razor allows you to switch between HTML markup and C# in the same file with IntelliSense programming support in Visual Studio.
 
