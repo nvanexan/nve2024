@@ -50,9 +50,7 @@ There are important differences between C# and JavaScript. If you’re coming to
 
 Most JS devs are writing [TypeScript](https://www.typescriptlang.org/) these days. And so many of the differences in terms of static typing are increasingly negligible, as production grade JS is increasingly looking like C#. But whereas TypeScript allows for escape hatches to apply greater or lesser type safety as needed, C# does not.
 
-Practically, this means you have great type safety at compile time. This makes the developer experience enjoyable in certain contexts. You certainly detect a lot more errors or breaking changes at compile time, which is useful particularly when refactoring. You can also fairly easily rename classes and namespaces, again useful when refactoring.
-
-In practice, however, I’ve found that if you need to build a solution or proof of concept quickly, Blazor adds some drag on velocity. You spend a lot more time taming OOP and its associated patterns (interfaces, inheritance, etc.). 
+Practically, this means you have great type safety at compile time. This makes the developer experience enjoyable in certain contexts. You certainly detect a lot more errors or breaking changes at compile time, which is useful particularly when refactoring. You can also fairly easily rename classes and namespaces, again useful when refactoring. But you will also spend a lot more time taming OOP and learning about how C# works within the context of .NET.[^4]
 
 ## Component Ergonomics
 
@@ -111,7 +109,7 @@ The key takeaway here is that if you want CSS isolation and you want your develo
 
 If you’re coming to Blazor from the JavaScript ecosystem, it is likely you are not using [Visual Studio](https://visualstudio.microsoft.com/) as your IDE, which is what professional C# developers use.
 
-I can say as a Mac user and JavaScript / TypeScript developer that you definitely can write and build Blazor apps without Visual Studio. You can use the [.NET Core CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/) to run, debug, watch, test, and build your projects or solutions, and it works very well. You can then also use [Visual Studio Code](https://code.visualstudio.com/) to write your app.[^4]
+I can say as a Mac user and JavaScript / TypeScript developer that you definitely can write and build Blazor apps without Visual Studio. You can use the [.NET Core CLI](https://learn.microsoft.com/en-us/dotnet/core/tools/) to run, debug, watch, test, and build your projects or solutions, and it works very well. You can then also use [Visual Studio Code](https://code.visualstudio.com/) to write your app.[^5]
 
 With Visual Studio Code, there are certain extensions you’re going to need to write C# for Blazor apps. These include:
 
@@ -208,7 +206,7 @@ This second assumption results in a developer experience that is less than ideal
 
 It works well enough, but is it elegant? I'm not so sure.
 
-The same is true if you are writing your own JavaScript. For example, let’s say you’re asked to implement a tooltip component. You can achieve a basic level of functionality with just HTML/CSS but for more advanced edge cases you’re going to need to get into window viewport sizes and collision detection to do things like dynamically move a tooltip to the other side when the browser width moves below a certain breakpoint. You will likely need use of the [window:matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and the [Element:getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) API. And because the creators of Blazor don’t think you will or should be writing much JavaScript, there’s no helpful defaults when you scaffold a new application about using TypeScript instead of JS, having a test harness for your TS/JS related code, and so on.[^5] You have to scaffold that yourself. At which point, once you start scaffolding a new TS repo with Jest for unit testing, etc. you may start to wonder... what have I really gained here?
+The same is true if you are writing your own JavaScript. For example, let’s say you’re asked to implement a tooltip component. You can achieve a basic level of functionality with just HTML/CSS but for more advanced edge cases you’re going to need to get into window viewport sizes and collision detection to do things like dynamically move a tooltip to the other side when the browser width moves below a certain breakpoint. You will likely need use of the [window:matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and the [Element:getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) API. And because the creators of Blazor don’t think you will or should be writing much JavaScript, there’s no helpful defaults when you scaffold a new application about using TypeScript instead of JS, having a test harness for your TS/JS related code, and so on.[^6] You have to scaffold that yourself. At which point, once you start scaffolding a new TS repo with Jest for unit testing, etc. you may start to wonder... what have I really gained here?
 
 To be sure, a Blazor app is designed for you to not have to write too much JS. But it's important to realize that when you do, inevitably, have to write JS, it can be a bit cumbersome to set up and implement.
 
@@ -224,11 +222,11 @@ One important example is [Storybook](https://storybook.js.org/). Storybook is a 
 
 ![Animated screenshot of Storybook](/images/posts/blazor-a-review-and-primer-for-ui-devs/2024-02-18%2009.42.02.gif)
 
-Most C# devs I’ve talked to about this have no idea what Storybook is, and that’s understandable, as they historically have not built a lot of UI. But those who have spent time building out component libraries and design systems understand the value of this tool and related tooling. 
+Most C# devs I’ve talked to about this have no idea what Storybook is, and that’s understandable, as they historically have not built a lot of UI. But those who have spent time building out component libraries and design systems understand the value of this tool and related tooling.
 
-Most devs understand that design system level components should be isolated and packable as a package for other teams to consume. And that works fine in Blazor. Just create a new razor class library and publish it on NuGet and you’re golden. But the next hurdle is... how do you document those components, and make them available for other teams to understand and play with? Further, how do you test those components for different scenarios, such as dark mode, accessibility, and so on? And what tooling are you putting in your CI pipeline to catch regressions for your components across their myriad states? 
+Most devs understand that design system level components should be isolated and packable as a package for other teams to consume. And that works fine in Blazor. Just create a new razor class library and publish it on NuGet and you’re golden. But the next hurdle is... how do you document those components, and make them available for other teams to understand and play with? Further, how do you test those components for different scenarios, such as dark mode, accessibility, and so on? And what tooling are you putting in your CI pipeline to catch regressions for your components across their myriad states?
 
-In the JavaScript ecosystem, [Storybook](https://storybook.js.org/) and [Chromatic](https://www.chromatic.com/) are important tools that have made building and testing component libraries, and sharing their documentation and APIs, a lot easier, and so much so that many organizations have developed “Story-Driven Development” as a practice.[^6]
+In the JavaScript ecosystem, [Storybook](https://storybook.js.org/) and [Chromatic](https://www.chromatic.com/) are important tools that have made building and testing component libraries, and sharing their documentation and APIs, a lot easier, and so much so that many organizations have developed “Story-Driven Development” as a practice.[^7]
 
 Currently, if you are looking for a Storybook-like solution, the only example I could find is a project created by a developer and maintained by a couple of others called [BlazingStory](https://github.com/jsakamoto/BlazingStory/). It does not have feature parity with Storybook and [the Storybook team has no plans to support Blazor](https://github.com/storybookjs/storybook/issues/13731#issuecomment-1164485710) at this time.
 
@@ -240,12 +238,27 @@ Unit testing capabilities in Blazor are fairly good and should be familiar to de
 
 Here’s a mapping of the unit testing technologies in the Blazor and React ecosystems:
 
-| Technology | Blazor | React |
-|:--|:--|:--|
-| Unit test runner | [xUnit](https://xunit.net/), [NUnit](https://nunit.org/), [MSTest](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest) | [Jest](https://jestjs.io/) |
-| Testing library | [bUnit](https://bunit.dev/) | [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) |
-| Snapshot testing | [Verify](https://github.com/VerifyTests/Verify) | [Jest snapshots](https://jestjs.io/docs/snapshot-testing) |
-| A11Y testing | - | [Jest-Axe](https://www.npmjs.com/package/jest-axe) |
+{% table %}
+- Technology
+- Blazor
+- React
+---
+- Unit test runner
+- [xUnit](https://xunit.net/), [NUnit](https://nunit.org/), [MSTest](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest)
+- [Jest](https://jestjs.io/)
+---
+- Testing library
+- [bUnit](https://bunit.dev/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+---
+- Snapshot testing
+- [Verify](https://github.com/VerifyTests/Verify)
+- [Jest snapshots](https://jestjs.io/docs/snapshot-testing)
+---
+- A11Y testing
+- n/a
+- [Jest-Axe](https://www.npmjs.com/package/jest-axe)
+{% /table %}
 
 [bUnit](https://bunit.dev/index.html) is a capable testing library and its format will be familiar to those with experience using [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). The aim in both cases is to test components as they are rendered, and how they would be used by a user.
 
@@ -275,14 +288,35 @@ With Blazor being based on .NET and C#, you may be wondering what its a11y story
 
 An additional caution. If you’re looking to leverage an existing third-party component library for Blazor, you are going to find the options available at this time to be sorely lacking, particularly when it comes to accessibility. In my own review of the leading UI component libraries for Blazor back in October 2023, I found not one delivered WCAG AA compliant components. Many failed even basic keyboard or screen-reading implementation tests.
 
-| Library | Accessible? | Notes |
-|:--|:--|:--|
-| [MudBlazor](https://mudblazor.com/docs/overview) | No | Roles, aria attributes, keyboard and focus support all lacking  |
-| [MatBlazor](https://www.matblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
-| [AntBlazor](https://antblazor.com/) | No | Roles, aria attributes, keyboard and focus support all lacking |
-| [Blazorise](https://blazorise.com/docs) | No | A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc. |
-| [Radzen](https://blazor.radzen.com/) | No | a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.) |
-| [Telerik](https://docs.telerik.com/blazor-ui/introduction) |  Claims to be | A lot better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components, making it difficult to correct defects without support tickets. |
+{% table %}
+- Library
+- Accessible?
+- Notes
+---
+- [MudBlazor](https://mudblazor.com/docs/overview)
+- No
+- Roles, aria attributes, keyboard and focus support all lacking
+---
+- [MatBlazor](https://www.matblazor.com/)
+- No
+- Roles, aria attributes, keyboard and focus support all lacking
+---
+- [AntBlazor](https://antblazor.com/)
+- No
+- Roles, aria attributes, keyboard and focus support all lacking
+---
+- [Blazorise](https://blazorise.com/docs)
+- No
+- A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc.
+---
+- [Radzen](https://blazor.radzen.com/)
+- No
+- a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.)
+---
+- [Telerik](https://docs.telerik.com/blazor-ui/introduction)
+- Claims to be
+- A lot better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components, making it difficult to correct defects without support tickets.
+{% /table %}
 
 I’m not entirely surprised by this outcome. In an ecosystem consisting primarily of back-end developers, the level of attention to UI concerns regarding a11y just isn’t there. Hopefully, over time, this will improve. But for now, the existing UI library ecosystem for Blazor is alarmingly ableist when compared to something like [Shoelace](https://shoelace.style/).
 
@@ -304,8 +338,10 @@ I am hopeful that this might change over time. The work on [BlazingStory](https:
 
 [^3]: There is a client-side WASM mode if you want to return to early 2000s Macromedia Flash and have your users download large binaries before being able to see any content. Which is to say, that’s not likely something you want to reach for and not where the future of Blazor will be, in my view.
 
-[^4]: There is a [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/) IDE but it is being retired on August 31, 2024.
+[^4]: How to properly use async / await with Task and not void, [for example](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming).
 
-[^5]: The Blazor documentation examples actually have you just dumping script tags on your base index.html that attach to the window object. Not exactly scalable.
+[^5]: There is a [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/) IDE but it is being retired on August 31, 2024.
 
-[^6]: See the notes from my [Changelog for October 2023](https://nick.vanexan.ca/changelog/2023-10), wherein I mentioned Stephanie Zeng's presentation on the use of this practice at [Rangle.io](https://rangle.io).
+[^6]: The Blazor documentation examples actually have you just dumping script tags on your base index.html that attach to the window object. Not exactly scalable.
+
+[^7]: See the notes from my [Changelog for October 2023](https://nick.vanexan.ca/changelog/2023-10), wherein I mentioned Stephanie Zeng's presentation on the use of this practice at [Rangle.io](https://rangle.io).
