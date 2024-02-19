@@ -95,11 +95,7 @@ All three of these elements can be combined in a single razor page to author a c
 
 This is a simple component that renders a callout on a screen. It takes a parameter called Content of RenderFragment type and renders that within a containing div, that attaches styles to the containing callout box.
 
-There are two things to notice here. The first is that we’re using specific syntax for C# and razor files to do the rendering. This is great if you’re a C# dev because you can use the syntax you’re already familiar with. 
-
-I call this point out because one of the main reasons I think React became so popular was because its templating language, JSX, had you writing fairly standard HTML and JavaScript all in one file. I can remember immediately preferring this over what Angular or Vue had to offer, with specific syntax for their templates (e.g. `ngFor`). You didn’t need to learn any new syntax or language to write JSX. For example, if you want to render a list of items, you just map an array `items.map(item => <li>{item.name}</li>)`.
-
-Razor has its own rules and syntax because it needs to work with C#, so in this sense the appeal of it is going to depend on how familiar those domain-specific rules and syntax are to you, and how much you want to commit to learning yet-another way to iterate a list of items in a template, or do string interpolation, and so on. The upside, however, is what you are writing is C#. So as long as you’re down for learning C#, the razor templating will fit in pretty well along your journey without getting in your way, in the same way JSX tries to get out of your way of writing templates with JS.
+There are two things to notice here. The first is that we’re using specific syntax for C# and razor files to do the rendering. This is great if you’re a C# dev because you can use the syntax you’re already familiar with. If you're coming to Blazor without much C# experience, there is going to be yet-another syntax to learn to render things on a page. The upside, however, is what you are writing is C#. So as long as you’re down for learning C#, the razor templating syntax will fit in pretty well along your journey without getting in your way.
 
 The second thing to notice is that while all the constituent elements of a component (template, logic, styles) *can* be written in a single `.razor` file, in practice they are commonly not, and instead are separated into three files:
 
@@ -127,7 +123,7 @@ Having said that, I can also say that the developer experience using Visual Stud
 
 ## Routing and Navigation
 
-Routing in Blazor is quite simple and quite good. You simply add `@page` directives to a Blazor component, and boom, you have a route.
+[Routing](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing?view=aspnetcore-8.0) in Blazor is quite simple and quite good. You simply add `@page` directives to a Blazor component, and boom, you have a route.
 
 ```
 @page "/blazor-route"
