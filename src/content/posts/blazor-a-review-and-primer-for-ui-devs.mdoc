@@ -163,11 +163,62 @@ The JS interop feature is a concession that to be a web developer you still need
 
 Similar to other Frameworks, Blazor assumes you won’t need to interact with the DOM directly and generally advises against doing so. But it also assumes you’ll need JS very minimally, and likely won’t be writing much yourself.
 
-This second assumption results in a developer experience that is less than ideal. To be sure, you can import and reference third party JS modules and talk to them in your C# code. But the experience of doing so can be cumbersome.
+This second assumption results in a developer experience that is less than ideal. To be sure, you can import and reference third party JS modules and talk to them in your C# code. But the experience of doing so can be a bit clunky. First, you have to put your JS module somewhere to be served as a static asset. Then you have to use the JS interop to interact with it. Here's an example from the Microsoft docs for using a simple JS script to trigger a prompt.
+
+```
+@page "/call-js-6"
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<PageTitle>Call JS 6</PageTitle>
+
+<h1>Call JS Example 6</h1>
+
+<p>
+    <button @onclick="TriggerPrompt">Trigger browser window prompt</button>
+</p>
+
+<p>
+    @result
+</p>
+
+@code {
+    private IJSObjectReference? module;
+    private string? result;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import",
+                "./scripts.js");
+        }
+    }
+
+    private async Task TriggerPrompt()
+    {
+        result = await Prompt("Provide some text");
+    }
+
+    public async ValueTask<string?> Prompt(string message) =>
+        module is not null ? 
+            await module.InvokeAsync<string>("showPrompt", message) : null;
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}
+```
+
+It works well enough, but is it elegant? I'm not so sure.
 
 The same is true if you are writing your own JavaScript. For example, let’s say you’re asked to implement a tooltip component. You can achieve a basic level of functionality with just HTML/CSS but for more advanced edge cases you’re going to need to get into window viewport sizes and collision detection to do things like dynamically move a tooltip to the other side when the browser width moves below a certain breakpoint. You will likely need use of the [window:matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) API and the [Element:getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) API. And because the creators of Blazor don’t think you will or should be writing much JavaScript, there’s no helpful defaults when you scaffold a new application about using TypeScript instead of JS, having a test harness for your TS/JS related code, and so on.[^6] You have to scaffold that yourself. At which point, once you start scaffolding a new TS repo with Jest for unit testing, etc. you may start to wonder... what have I really gained here?
 
-This is a recurring question I find myself asking with Blazor. Why does this exist? The aim, primarily, is to make C# devs productive on the UI section of the stack. But if, to build good UI, you need to leverage TS/JS to communciate with the browser, you soon realize that you need TS/JS developers and a codebase that enables those capabilities. To be sure, you can leverage existing libraries, including client-side only web components. But the fact remains: the framework you’ve chosen to build UI treats the language you use to communicate with the browser as a second-class citizen, an afterthought, an edge case. Which, from a developer experience perspective, kind of sucks.
+To be sure, a Blazor app is designed for you to not have to write too much JS. But it's important to realize that when you do, inevitably, have to write JS, it can be a bit cumbersome to set up and implement.
 
 ## Ecosystem
 
@@ -227,8 +278,6 @@ public class HelloWorldTest : TestContext
 In practice, I have found bUnit has some limitations relative to React Testing Library with respect to simulating certain inputs and handling keyboard events. The bUnit ecosystem also lacks accessibility matchers, so whereas with Jest you can use the [jest-axe](https://www.npmjs.com/package/jest-axe) library to assert that a component has no accessibility violations, you currently have to manually write tests for accessibility related functionality you want to test in your components.
 
 ## Accessibility
-
-Accessibility is a hot button topic at the moment. I have strong opinions about it. And those opinions reduce to this: we are obligated as software developers to make products that are usable by everyone, of every ability. UIs that aren’t usable by those with disabilities deny those people their basic human rights. We cannot abide such outcomes.
 
 With Blazor being based on .NET and C#, you may be wondering what its a11y story looks like. In general, I would say that Blazor itself as a technology does not prevent the development of accessible web applications, but it doesn't always make it easy either. You can use proper standard elements like `<button>`, you can add aria attributes to elements, you can add event handlers to control interactions on key presses, and you can set focus to elements. Some of this last mile work does require use of the JS interop, though, which can be a bit clunky to use.
 
