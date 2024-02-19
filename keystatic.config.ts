@@ -48,6 +48,7 @@ export default config({
           formatting: true,
           dividers: true,
           links: true,
+          tables: true,
           images: {
             directory: "public/images/posts",
             publicPath: "/images/posts/",
@@ -110,6 +111,7 @@ export default config({
           formatting: true,
           dividers: true,
           links: true,
+          tables: true,
           images: {
             directory: "public/images/changelogs",
             publicPath: "/images/changelogs/",
