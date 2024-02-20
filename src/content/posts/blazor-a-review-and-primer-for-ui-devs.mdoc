@@ -38,7 +38,7 @@ Here’s an example of a Blazor component defined in a Razor page:
 
 Blazor can run (and in my view is intended primarily to run) on the server.[^3] This makes Blazor more like [Next.JS](https://nextjs.org/) than simple client-side React. As with Next.JS, this changes the designs and patterns you may use for development. For example, you don’t need to call an API when you can query the database directly and pull back the data *before* the component is rendered.
 
-Another important difference between Blazor and other frameworks is in how client-server communication happens. Updating UI content and handling events happen over a SignalR connection using the WebSockets protocol.[^3]
+Another important difference between Blazor and other frameworks is in how client-server communication happens. Updating UI content and handling events happen over a SignalR connection using the WebSockets protocol.[^4]
 
 That sets the table. Let’s move on to the meal. In the next sections I’m going to delve into some features of Blazor and the trade-offs I’ve encountered working with it in the field.
 
@@ -340,9 +340,9 @@ I am hopeful that this might change over time. But as with most things, time and
 
 [^2]: However, in practice, limitations with IntelliSense, namespacing and a poor developer experience in Visual Studio Code mean that .razor files typically contain basic templating for a component with the logic being placed in an accompanying partial class file (e.g. `Button.razor.cs`).
 
-[^3] You can learn more about server-side Blazor and circuits over SignalR [here](https://www.c-sharpcorner.com/article/understanding-server-side-blazor).
+[^3]: There is a client-side WASM mode if you want to return to early 2000s Macromedia Flash and have your users download large binaries before being able to see any content. Which is to say, that’s not likely something you want to reach for and not where the future of Blazor will be, in my view.
 
-[^4]: There is a client-side WASM mode if you want to return to early 2000s Macromedia Flash and have your users download large binaries before being able to see any content. Which is to say, that’s not likely something you want to reach for and not where the future of Blazor will be, in my view.
+[^4] You can learn more about server-side Blazor and circuits over SignalR [here](https://www.c-sharpcorner.com/article/understanding-server-side-blazor).
 
 [^5]: How to properly use async / await with Task and not void, [for example](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming).
 
