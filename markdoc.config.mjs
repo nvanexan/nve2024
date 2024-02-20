@@ -1,5 +1,5 @@
 import { defineMarkdocConfig, nodes, component } from "@astrojs/markdoc/config";
-import prism from "@astrojs/markdoc/prism";
+import shiki from "@astrojs/markdoc/shiki";
 
 export default defineMarkdocConfig({
   nodes: {
@@ -38,5 +38,30 @@ export default defineMarkdocConfig({
       },
     },
   },
-  extends: [prism({})],
+  extends: [
+    shiki({
+      experimentalThemes: {
+        dark: "material-theme-darker",
+        light: "light-plus",
+      },
+      langs: [
+        "astro",
+        "typescript",
+        "javascript",
+        "razor",
+        "csharp",
+        "json",
+        "yaml",
+        "css",
+        "scss",
+        "html",
+        "xml",
+        "markdown",
+        "bash",
+        "shell",
+        "powershell",
+        "plaintext",
+      ],
+    }),
+  ],
 });
