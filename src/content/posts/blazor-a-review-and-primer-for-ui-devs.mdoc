@@ -17,7 +17,7 @@ Blazor components are .NET C# classes built into .NET assemblies. The component 
 
 Here’s an example of a Blazor component defined in a Razor page:
 
-```
+```razor
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -62,7 +62,7 @@ Building components in Blazor is similar to building components in other framewo
 
 All three of these elements can be combined in a single razor page to author a component. Here’s an example:
 
-```
+```razor
 @namespace App.Common.Callouts
 
 <div class="@($"app-callout {Variant?.ToString().ToLower()}")">
@@ -82,16 +82,16 @@ All three of these elements can be combined in a single razor page to author a c
 }
 
 <style>
-	.app-callout {
-		border: solid 1px var(--app-colors-light-grey);
-		background: var(--app-colors-white);
-		padding: 1rem;
-	}
+    .app-callout {
+        border: solid 1px var(--app-colors-light-grey);
+        background: var(--app-colors-white);
+        padding: 1rem;
+    }
 	
-	.app-callout.error {
-		border-color: var(--app-colors-red);
-		background: var(--app-colors-light-red);
-	}
+    .app-callout.error {
+        border-color: var(--app-colors-red);
+        background: var(--app-colors-light-red);
+    }
 </style>
 ```
 
@@ -127,7 +127,7 @@ Having said that, I can also say that the developer experience using Visual Stud
 
 [Routing](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing?view=aspnetcore-8.0) in Blazor is quite simple and quite good. You simply add `@page` directives to a Blazor component, and boom, you have a route.
 
-```
+```razor
 @page "/blazor-route"
 @page "/different-blazor-route"
 
@@ -159,7 +159,7 @@ Similar to other Frameworks, Blazor assumes you won’t need to interact with th
 
 This second assumption results in a developer experience that is less than ideal. To be sure, you can import and reference third party JS modules and talk to them in your C# code. But the experience of doing so can be a bit clunky. First, you have to put your JS module somewhere to be served as a static asset. Then you have to use the JS interop to interact with it. Here's an example from the Microsoft docs for using a simple JS script to trigger a prompt.
 
-```
+```razor
 @page "/call-js-6"
 @implements IAsyncDisposable
 @inject IJSRuntime JS
