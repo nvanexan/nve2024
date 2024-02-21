@@ -1,0 +1,68 @@
+<div class="nve-settings-container">
+  <sl-switch class="nve-theme-switch">Dark Mode</sl-switch>
+</div>
+
+<script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/components/switch/switch.js"
+></script>
+
+<script>
+  const ctrl = document.querySelector("sl-switch.nve-theme-switch");
+
+  let sessionThemePreference =
+    document.documentElement.getAttribute("data-theme");
+
+  if (sessionThemePreference === "dark") {
+    ctrl.checked = true;
+  } else {
+    ctrl.checked = false;
+  }
+
+  function setDarkMode() {
+    localStorage.setItem("theme", "dark");
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.classList.add("sl-theme-dark");
+    ctrl.checked = true;
+  }
+
+  function setLightMode() {
+    localStorage.setItem("theme", "light");
+    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.classList.remove("sl-theme-dark");
+    ctrl.checked = false;
+  }
+
+  function handleThemePreferenceChange(event: MediaQueryListEvent) {
+    if (event.matches) {
+      setDarkMode();
+    } else {
+      setLightMode();
+    }
+  }
+
+  function handleSwitchChange(event) {
+    if (event.target.checked) {
+      setDarkMode();
+    } else {
+      setLightMode();
+    }
+  }
+
+  ctrl.addEventListener("sl-change", handleSwitchChange);
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", handleThemePreferenceChange);
+</script>
+
+<style>
+  .nve-settings-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+</style>
