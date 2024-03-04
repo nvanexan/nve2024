@@ -354,6 +354,13 @@ declare module 'astro:content' {
   collection: "changelogs";
   data: InferEntrySchema<"changelogs">
 } & { render(): Render[".mdoc"] };
+"2024-02.mdoc": {
+	id: "2024-02.mdoc";
+  slug: "2024-02";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
 };
 "now": {
 "content.mdoc": {

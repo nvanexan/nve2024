@@ -21,7 +21,7 @@ const sortedPosts = posts
         sortedPosts.map(async (post) => {
           return (
             <li>
-              <a href={`/posts/${post.slug}`}>{post.data.title}</a>{" "}
+              <a href={`/posts/${post.slug}`}>{post.data.title}</a> <hr />
               <em>({post.data.date})</em>
             </li>
           );
