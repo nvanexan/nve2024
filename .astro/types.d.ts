@@ -372,6 +372,13 @@ declare module 'astro:content' {
 } & { render(): Render[".mdoc"] };
 };
 "posts": {
+"apollo-eleven.mdoc": {
+	id: "apollo-eleven.mdoc";
+  slug: "apollo-eleven";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".mdoc"] };
 "astro-keystatic-markdoc.mdoc": {
 	id: "astro-keystatic-markdoc.mdoc";
   slug: "astro-keystatic-markdoc";

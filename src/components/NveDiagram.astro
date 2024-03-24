@@ -12,6 +12,7 @@ const dark = fs.readFileSync(`./public${props.dark}`, "utf8");
     lightsvg = "";
     darksvg = "";
     listener: any = undefined;
+    observer: any = undefined;
 
     constructor() {
       super();
@@ -94,6 +95,33 @@ const dark = fs.readFileSync(`./public${props.dark}`, "utf8");
         .matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", this.listener);
 
+      this.observer = new MutationObserver((mutationsList) => {
+        for (let mutation of mutationsList) {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "data-theme"
+          ) {
+            const newColorScheme =
+              document.documentElement.getAttribute("data-theme");
+            // You can react to the change here
+            switch (newColorScheme) {
+              case "dark":
+                figure.innerHTML = this.darksvg;
+                break;
+              case "light":
+                figure.innerHTML = this.lightsvg;
+                break;
+              default:
+                break;
+            }
+
+            this.addFigCaption(figure);
+          }
+        }
+      });
+
+      this.observer.observe(document.documentElement, { attributes: true });
+
       this.removeAttribute("light");
       this.removeAttribute("dark");
       this.removeAttribute("svgdata");
@@ -108,6 +136,7 @@ const dark = fs.readFileSync(`./public${props.dark}`, "utf8");
           .matchMedia("(prefers-color-scheme: dark)")
           .removeEventListener("change", this.listener);
       }
+      this.observer.disconnect();
     }
   }
 
