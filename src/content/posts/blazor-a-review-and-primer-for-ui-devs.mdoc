@@ -311,15 +311,19 @@ An additional caution. If you’re looking to leverage an existing third-party c
 ---
 - [Blazorise](https://blazorise.com/docs)
 - No
-- A bit better than the others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc.
+- A bit better than others, but keyboard support isn't fully there (see Tabs), Date Picker is not accessible, etc.
 ---
 - [Radzen](https://blazor.radzen.com/)
 - No
 - a11y issues with many components (DatePicker, Dialog, Grid, Select / Dropdown, etc.)
 ---
+- [Fluent-UI](https://www.fluentui-blazor.net/)
+- No
+- A bit better than others, but still a number of issues (DatePicker for example)
+---
 - [Telerik](https://docs.telerik.com/blazor-ui/introduction)
 - Claims to be
-- A lot better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components, making it difficult to correct defects without support tickets.
+- A bit better than the other libraries, but requires commercial license, and API doesn’t allow you to add your own aria attributes in many components (no attribute splatting permitted), making it difficult to correct defects without support tickets.
 {% /table %}
 
 I’m not entirely surprised by this outcome. In an ecosystem consisting primarily of back-end developers, the level of attention to UI concerns regarding a11y just isn’t there. Hopefully, over time, this will improve. But for now, the existing UI library ecosystem for Blazor is alarmingly ableist when compared to something like [Shoelace](https://shoelace.style/).
