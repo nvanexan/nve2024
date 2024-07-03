@@ -14,4 +14,7 @@ export default defineConfig({
   adapter: vercel({
     edgeMiddleware: true,
   }),
+  redirects: {
+    "/writing": "/articles",
+  },
 });

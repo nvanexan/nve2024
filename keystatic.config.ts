@@ -119,5 +119,40 @@ export default config({
         }),
       },
     }),
+    fragments: collection({
+      label: "Fragments",
+      slugField: "title",
+      path: "src/content/fragments/*",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({ name: { label: "Title" } }),
+        description: fields.text({
+          label: "Description",
+          defaultValue: "This is a description",
+        }),
+        date: fields.date({
+          label: "Date",
+          defaultValue: { kind: "today" },
+          validation: {
+            isRequired: true,
+          },
+        }),
+        published: fields.checkbox({
+          label: "Published",
+          defaultValue: false,
+        }),
+        content: fields.document({
+          label: "Content",
+          formatting: true,
+          dividers: true,
+          links: true,
+          tables: true,
+          images: {
+            directory: "public/images/fragments",
+            publicPath: "/images/fragments/",
+          },
+        }),
+      },
+    }),
   },
 });

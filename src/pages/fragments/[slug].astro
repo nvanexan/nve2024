@@ -1,0 +1,34 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
+import Header from "../../components/Header.astro";
+import Spacer from "../../components/Spacer.astro";
+import BackToLink from "../../components/BackToLink.astro";
+
+const { slug } = Astro.params;
+if (!slug) throw new Error("Slug not found");
+const fragment = await getEntry("fragments", slug);
+
+if (!fragment) throw new Error("No fragment found for this slug");
+const { Content } = await fragment.render();
+
+// Generate static pages
+export async function getStaticPaths() {
+  const fragments = await getCollection("fragments");
+  return fragments.map((fragment) => ({ params: { slug: fragment.slug } }));
+}
+---
+
+<Layout title={fragment.data.title} description={fragment.data.description}>
+  <Header showTitle={true} />
+  <ArticleTitle
+    heading={fragment.data.title}
+    subheading={fragment.data.description}
+  />
+  <div class="post">
+    <Content />
+  </div>
+  <Spacer />
+  <BackToLink text="Back to fragments" href="/fragments" />
+</Layout>

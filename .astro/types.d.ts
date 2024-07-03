@@ -361,6 +361,43 @@ declare module 'astro:content' {
   collection: "changelogs";
   data: InferEntrySchema<"changelogs">
 } & { render(): Render[".mdoc"] };
+"2024-03.mdoc": {
+	id: "2024-03.mdoc";
+  slug: "2024-03";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2024-04.mdoc": {
+	id: "2024-04.mdoc";
+  slug: "2024-04";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2024-05.mdoc": {
+	id: "2024-05.mdoc";
+  slug: "2024-05";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+"2024-06.mdoc": {
+	id: "2024-06.mdoc";
+  slug: "2024-06";
+  body: string;
+  collection: "changelogs";
+  data: InferEntrySchema<"changelogs">
+} & { render(): Render[".mdoc"] };
+};
+"fragments": {
+"first-fragment.mdoc": {
+	id: "first-fragment.mdoc";
+  slug: "first-fragment";
+  body: string;
+  collection: "fragments";
+  data: InferEntrySchema<"fragments">
+} & { render(): Render[".mdoc"] };
 };
 "now": {
 "content.mdoc": {

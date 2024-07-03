@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
+import Header from "../../components/Header.astro";
+
+const fragments = await getCollection("fragments");
+const sortedFragments =
+  fragments
+    ?.filter((p) => !!p.data.published)
+    ?.sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    ) ?? [];
+---
+
+<Layout title="Fragments" description="Atomic notes, snippets, musings, etc.">
+  <Header showTitle={true} />
+  <ArticleTitle
+    heading="Fragments"
+    subheading="Atomic notes, snippets, musings, etc."
+  />
+  <section class="writing-list">
+    {sortedFragments.length === 0 && <p>No fragments yet. Check back soon!</p>}
+    <ul>
+      {
+        sortedFragments.map(async (f) => {
+          return (
+            <li>
+              <a href={`/fragments/${f.slug}`}>{f.data.title}</a> <hr />
+              <em>({f.data.date})</em>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</Layout>

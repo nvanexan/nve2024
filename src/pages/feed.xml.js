@@ -40,7 +40,20 @@ export async function GET(context) {
     ),
   }));
 
-  const items = [...blogItems, ...changelogItems].sort(
+  const fragments = await getCollection("fragments");
+  const fragmentItems = fragments.map((fragment) => ({
+    title: fragment.data.title,
+    pubDate: fragment.data.date,
+    description: fragment.data.description,
+    link: `/fragment/${fragment.slug}/`,
+    content: sanitizeHtml(
+      Markdoc.renderers.html(
+        Markdoc.transform(parser.parse(fragment.body), config)
+      )
+    ),
+  }));
+
+  const items = [...blogItems, ...changelogItems, ...fragmentItems].sort(
     (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
   );
 
