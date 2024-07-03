@@ -22,6 +22,16 @@ const changelogs = defineCollection({
   }),
 });
 
+const fragments = defineCollection({
+  // Type-check frontmatter using a schema
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.string(),
+    published: z.boolean().optional(),
+  }),
+});
+
 const about = defineCollection({
   // Type-check frontmatter using a schema
   schema: z.object({
@@ -30,4 +40,4 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { posts, changelogs, about };
+export const collections = { posts, changelogs, fragments, about };
