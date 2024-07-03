@@ -1,0 +1,79 @@
+---
+import "../styles.css";
+import ThemeToggle from "../components/ThemeToggle.astro";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  socialImageUrl?: string;
+}
+
+const baseUrl = import.meta.env.SITE;
+const { title, description, socialImageUrl } = Astro.props;
+const { slug } = Astro.params;
+const seoUrl = slug ? `${baseUrl}/${slug}` : baseUrl;
+const fallbackImageUrl = `${baseUrl}/nve-social-logo.png`;
+const fullTitle = title ? `${title} | Nick Van Exan` : "Nick Van Exan";
+const fallbackDescription =
+  "Software developer and data protection consultant (CIPP/C, CIPP/E) from Toronto.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <script is:inline>
+      let sessionThemePreference = localStorage.getItem("theme");
+
+      if (sessionThemePreference === null) {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          sessionThemePreference = "dark";
+          localStorage.setItem("theme", "dark");
+        } else {
+          sessionThemePreference = "light";
+          localStorage.setItem("theme", "light");
+        }
+      }
+
+      if (sessionThemePreference === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.classList.add("sl-theme-dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        document.documentElement.classList.remove("sl-theme-dark");
+      }
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/nve-icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+
+    <meta name="description" content={description} />
+
+    <!-- OpenGraph -->
+    <meta property="og:url" content={seoUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta
+      property="og:description"
+      content={description || fallbackDescription}
+    />
+    <meta property="og:image" content={socialImageUrl || fallbackImageUrl} />
+
+    <!-- Shoelace -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/themes/light.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/cdn/themes/dark.css"
+    />
+  </head>
+  <body style="--body-margin-left: 0px; --body-margin-right: 0px;">
+    <div class="app photo-layout">
+      <slot />
+    </div>
+  </body>
+</html>

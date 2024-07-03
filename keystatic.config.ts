@@ -154,5 +154,54 @@ export default config({
         }),
       },
     }),
+    photos: collection({
+      label: "Photos",
+      slugField: "title",
+      path: "src/content/photos/*",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({ name: { label: "Title" } }),
+        description: fields.text({
+          label: "Description",
+          defaultValue: "This is a description",
+        }),
+        date: fields.date({
+          label: "Date",
+          defaultValue: { kind: "today" },
+          validation: {
+            isRequired: true,
+          },
+        }),
+        published: fields.checkbox({
+          label: "Published",
+          defaultValue: false,
+        }),
+        orientation: fields.select({
+          label: "Orientation",
+          description: "Orientation of the photo",
+          options: [
+            { label: "Landscape", value: "landscape" },
+            { label: "Portrait", value: "portrait" },
+          ],
+          defaultValue: "landscape",
+        }),
+        photo: fields.image({
+          label: "Photo",
+          directory: "public/images/photos",
+          publicPath: "/images/photos/",
+        }),
+        content: fields.document({
+          label: "Content",
+          formatting: true,
+          dividers: true,
+          links: true,
+          tables: true,
+          images: {
+            directory: "public/images/photos",
+            publicPath: "/images/photos/",
+          },
+        }),
+      },
+    }),
   },
 });

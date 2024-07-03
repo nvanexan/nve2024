@@ -408,6 +408,22 @@ declare module 'astro:content' {
   data: any
 } & { render(): Render[".mdoc"] };
 };
+"photos": {
+"test-photo-two.mdoc": {
+	id: "test-photo-two.mdoc";
+  slug: "test-photo-two";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+"test-photo.mdoc": {
+	id: "test-photo.mdoc";
+  slug: "test-photo";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+};
 "posts": {
 "apollo-eleven.mdoc": {
 	id: "apollo-eleven.mdoc";
