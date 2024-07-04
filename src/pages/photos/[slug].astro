@@ -1,0 +1,43 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import PhotoLayout from "../../layouts/PhotoLayout.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
+import Header from "../../components/Header.astro";
+import Spacer from "../../components/Spacer.astro";
+import BackToLink from "../../components/BackToLink.astro";
+import ThemeToggle from "../../components/ThemeToggle.astro";
+
+const { slug } = Astro.params;
+if (!slug) throw new Error("Slug not found");
+const photo = await getEntry("photos", slug);
+
+if (!photo) throw new Error("No photo found for this slug");
+const { Content } = await photo.render();
+
+// Generate static pages
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+  return photos.map((photo) => ({ params: { slug: photo.slug } }));
+}
+---
+
+<PhotoLayout title={photo.data.title} description={photo.data.description}>
+  <header class="photo-layout-header">
+    <ThemeToggle />
+    <Header showTitle={true} />
+    <ArticleTitle
+      heading={photo.data.title}
+      subheading={photo.data.description}
+    />
+  </header>
+  <div class={`photo-outer-container ${photo.data.orientation}`}>
+    <div class="photo-inner-container">
+      <img src={photo.data.photo} alt={photo.data.description} />
+    </div>
+  </div>
+  <div class="photo-description">
+    <Content />
+    <Spacer />
+    <BackToLink text="Back to Photos" href="/photos" />
+  </div>
+</PhotoLayout>

@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
+import Header from "../../components/Header.astro";
+
+const photos = await getCollection("photos");
+const sortedPhotos =
+  photos
+    ?.filter((p) => !!p.data.published)
+    ?.sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    ) ?? [];
+---
+
+<Layout
+  title="Photos"
+  description="Sometimes a picture is worth all of the words."
+>
+  <Header showTitle={true} />
+  <ArticleTitle
+    heading="Photos"
+    subheading="Sometimes a picture is worth all of the words."
+  />
+  <section class="photos">
+    {sortedPhotos.length === 0 && <p>No photos yet. Check back soon!</p>}
+    {
+      sortedPhotos.map(async (photo) => {
+        const { Content } = await photo.render();
+        return (
+          <a href={`/photos/${photo.slug}`} class="photo-link">
+            <figure class="image-container">
+              <img src={photo.data.photo} alt={photo.data.description} />
+              <figcaption>{photo.data.title}</figcaption>
+            </figure>
+          </a>
+        );
+      })
+    }
+  </section>
+</Layout>
