@@ -10,10 +10,11 @@ import react, { createElement } from "react";
 
 export default config({
   storage: {
-    kind: "github",
-    repo: {
-      owner: "nvanexan",
-      name: "nve2024",
+    storage: {
+      kind: 'cloud',
+    },
+    cloud: {
+      project: 'fieldwork/nve2024',
     },
   },
   collections: {
