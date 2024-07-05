@@ -8,10 +8,7 @@ const photos = await getCollection("photos");
 const sortedPhotos =
   photos
     ?.filter((p) => !!p.data.published)
-    ?.sort(
-      (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-    ) ?? [];
+    ?.sort((a, b) => b.data.sequence - a.data.sequence) ?? [];
 ---
 
 <Layout
@@ -27,7 +24,6 @@ const sortedPhotos =
     {sortedPhotos.length === 0 && <p>No photos yet. Check back soon!</p>}
     {
       sortedPhotos.map(async (photo) => {
-        const { Content } = await photo.render();
         return (
           <a href={`/photos/${photo.slug}`} class="photo-link">
             <figure class="image-container">

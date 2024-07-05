@@ -398,6 +398,13 @@ declare module 'astro:content' {
   collection: "fragments";
   data: InferEntrySchema<"fragments">
 } & { render(): Render[".mdoc"] };
+"photos.mdoc": {
+	id: "photos.mdoc";
+  slug: "photos";
+  body: string;
+  collection: "fragments";
+  data: InferEntrySchema<"fragments">
+} & { render(): Render[".mdoc"] };
 };
 "now": {
 "content.mdoc": {
@@ -409,16 +416,37 @@ declare module 'astro:content' {
 } & { render(): Render[".mdoc"] };
 };
 "photos": {
-"test-photo-two.mdoc": {
-	id: "test-photo-two.mdoc";
-  slug: "test-photo-two";
+"atacama-skies-2023.mdoc": {
+	id: "atacama-skies-2023.mdoc";
+  slug: "atacama-skies-2023";
   body: string;
   collection: "photos";
   data: any
 } & { render(): Render[".mdoc"] };
-"test-photo.mdoc": {
-	id: "test-photo.mdoc";
-  slug: "test-photo";
+"el-loa-airport-2023.mdoc": {
+	id: "el-loa-airport-2023.mdoc";
+  slug: "el-loa-airport-2023";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+"salar-de-atacama-2023.mdoc": {
+	id: "salar-de-atacama-2023.mdoc";
+  slug: "salar-de-atacama-2023";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+"torres-del-paine-2023.mdoc": {
+	id: "torres-del-paine-2023.mdoc";
+  slug: "torres-del-paine-2023";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+"valle-de-la-luna-2023.mdoc": {
+	id: "valle-de-la-luna-2023.mdoc";
+  slug: "valle-de-la-luna-2023";
   body: string;
   collection: "photos";
   data: any
