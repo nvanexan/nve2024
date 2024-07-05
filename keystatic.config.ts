@@ -20,6 +20,7 @@ export default config({
     posts: collection({
       label: "Posts",
       slugField: "title",
+      columns: ["title", "date", "published"],
       path: "src/content/posts/*",
       format: { contentField: "content" },
       schema: {
@@ -87,6 +88,7 @@ export default config({
     changelogs: collection({
       label: "Changelogs",
       slugField: "title",
+      columns: ["title", "date", "published"],
       path: "src/content/changelogs/*",
       format: { contentField: "content" },
       schema: {
@@ -122,6 +124,7 @@ export default config({
     fragments: collection({
       label: "Fragments",
       slugField: "title",
+      columns: ["title", "date", "published"],
       path: "src/content/fragments/*",
       format: { contentField: "content" },
       schema: {
@@ -157,9 +160,14 @@ export default config({
     photos: collection({
       label: "Photos",
       slugField: "title",
+      columns: ["sequence", "title", "date", "published"],
       path: "src/content/photos/*",
       format: { contentField: "content" },
       schema: {
+        sequence: fields.integer({
+          label: "Sequence",
+          defaultValue: 0,
+        }),
         title: fields.slug({ name: { label: "Title" } }),
         description: fields.text({
           label: "Description",
