@@ -430,6 +430,13 @@ declare module 'astro:content' {
   collection: "photos";
   data: any
 } & { render(): Render[".mdoc"] };
+"magdalena-island-2023.mdoc": {
+	id: "magdalena-island-2023.mdoc";
+  slug: "magdalena-island-2023";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
 "salar-de-atacama-2023.mdoc": {
 	id: "salar-de-atacama-2023.mdoc";
   slug: "salar-de-atacama-2023";

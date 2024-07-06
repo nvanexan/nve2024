@@ -5,6 +5,7 @@ import ArticleTitle from "../../components/ArticleTitle.astro";
 import Header from "../../components/Header.astro";
 import Spacer from "../../components/Spacer.astro";
 import BackToLink from "../../components/BackToLink.astro";
+import FwdToLink from "../../components/FwdToLink.astro";
 
 const { slug } = Astro.params;
 if (!slug) throw new Error("Slug not found");
@@ -12,6 +13,32 @@ const fragment = await getEntry("fragments", slug);
 
 if (!fragment) throw new Error("No fragment found for this slug");
 const { Content } = await fragment.render();
+
+const fragments = await getCollection("fragments");
+const sortedFragments =
+  fragments
+    ?.filter((p) => !!p.data.published)
+    ?.sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    ) ?? [];
+
+// Get the current year and month
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth(); // Note: getMonth() returns 0 for January, 1 for February, etc.
+const currentMonthName = currentDate.toLocaleString("default", {
+  month: "long",
+});
+
+// Filter fragments to include only those from the current year and month
+const currentFragments = sortedFragments.filter((fragment) => {
+  const fragmentDate = new Date(fragment.data.date);
+  return (
+    fragmentDate.getFullYear() === currentYear &&
+    fragmentDate.getMonth() === currentMonth
+  );
+});
 
 // Generate static pages
 export async function getStaticPaths() {
@@ -30,5 +57,21 @@ export async function getStaticPaths() {
     <Content />
   </div>
   <Spacer />
-  <BackToLink text="Back to fragments" href="/fragments" />
+  <section class="writing-list">
+    <h3>{currentMonthName}'s Fragments</h3>
+    <ul>
+      {
+        currentFragments.map(async (f) => {
+          return (
+            <li>
+              <a href={`/fragments/${f.slug}`}>{f.data.title}</a> <hr />
+              <em>({f.data.date})</em>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+  <Spacer />
+  <BackToLink text="All fragments" href="/fragments" />
 </Layout>

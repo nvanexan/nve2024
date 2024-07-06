@@ -10,11 +10,15 @@ import react, { createElement } from "react";
 
 export default config({
   storage: {
-    kind: "github",
-    repo: {
-      owner: "nvanexan",
-      name: "nve2024",
-    },
+    kind: "cloud",
+    // kind: "github",
+    // repo: {
+    //   owner: "nvanexan",
+    //   name: "nve2024",
+    // },
+  },
+  cloud: {
+    project: "fieldwork/nve2024",
   },
   collections: {
     posts: collection({
@@ -160,14 +164,10 @@ export default config({
     photos: collection({
       label: "Photos",
       slugField: "title",
-      columns: ["sequence", "title", "date", "published"],
+      columns: ["title", "date", "published"],
       path: "src/content/photos/*",
       format: { contentField: "content" },
       schema: {
-        sequence: fields.integer({
-          label: "Sequence",
-          defaultValue: 0,
-        }),
         title: fields.slug({ name: { label: "Title" } }),
         description: fields.text({
           label: "Description",

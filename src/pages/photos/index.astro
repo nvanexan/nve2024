@@ -8,7 +8,10 @@ const photos = await getCollection("photos");
 const sortedPhotos =
   photos
     ?.filter((p) => !!p.data.published)
-    ?.sort((a, b) => b.data.sequence - a.data.sequence) ?? [];
+    ?.sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    ) ?? [];
 ---
 
 <Layout

@@ -1,0 +1,23 @@
+---
+interface Props {
+  text: string;
+  href: string;
+}
+
+const props = Astro.props;
+---
+
+<a href={props.href} class="fwd-link">{props.text}</a>
+
+<style>
+  .fwd-link:after {
+    content: " →";
+    position: absolute;
+    transform: translateX(0.5rem);
+    transition: transform 0.2s ease-out;
+  }
+
+  .fwd-link:hover::after {
+    transform: translateX(2rem);
+  }
+</style>

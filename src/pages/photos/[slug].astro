@@ -14,6 +14,39 @@ const photo = await getEntry("photos", slug);
 if (!photo) throw new Error("No photo found for this slug");
 const { Content } = await photo.render();
 
+const photos = await getCollection("photos");
+const sortedPhotos =
+  photos
+    ?.filter((p) => !!p.data.published)
+    ?.sort(
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    ) ?? [];
+
+const currentIndex = sortedPhotos.findIndex((p) => p.slug === slug);
+// Calculate start index, ensuring it's not less than 0
+const startIndex = Math.max(currentIndex - 2, 0);
+
+// Calculate end index to get up to 4 items, ensuring it does not exceed the array's length
+const endIndex = Math.min(startIndex + 4, sortedPhotos.length);
+
+var currentPhotos = sortedPhotos
+  .filter((p) => p.slug !== slug)
+  .slice(startIndex, endIndex);
+
+// If the slice is at the start or end of the array and returns less than 4 items,
+// adjust the slice to ensure we always attempt to return 4 items if possible
+const adjustedLength = currentPhotos.length;
+if (adjustedLength < 4 && sortedPhotos.length >= 4) {
+  if (startIndex === 0) {
+    // If we are at the start, try to get more items from the end
+    currentPhotos = sortedPhotos.filter((p) => p.slug !== slug).slice(0, 4);
+  } else if (endIndex === sortedPhotos.length) {
+    // If we are at the end, try to get more items from the start
+    currentPhotos = sortedPhotos.filter((p) => p.slug !== slug).slice(-4);
+  }
+}
+
 // Generate static pages
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
@@ -37,6 +70,26 @@ export async function getStaticPaths() {
   </div>
   <div class="photo-description">
     <Content />
+    {
+      currentPhotos.length > 1 && (
+        <>
+          <Spacer />
+          <section class="writing-list">
+            <h3>More Photos</h3>
+            <ul>
+              {currentPhotos.map(async (f) => {
+                return (
+                  <li>
+                    <a href={`/photos/${f.slug}`}>{f.data.title}</a> <hr />
+                    <em>({f.data.date})</em>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </>
+      )
+    }
     <Spacer />
     <BackToLink text="Back to Photos" href="/photos" />
   </div>
