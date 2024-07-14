@@ -674,6 +674,11 @@ td {
   gap: 0.3rem;
 }
 
+.writing-list ul li.is-current:before {
+  content: "▶";
+  font-size: 0.8rem;
+}
+
 .writing-list ul li hr {
   height: 1px;
   width: 100%;

@@ -398,9 +398,23 @@ declare module 'astro:content' {
   collection: "fragments";
   data: InferEntrySchema<"fragments">
 } & { render(): Render[".mdoc"] };
+"get-there-itis.mdoc": {
+	id: "get-there-itis.mdoc";
+  slug: "get-there-itis";
+  body: string;
+  collection: "fragments";
+  data: InferEntrySchema<"fragments">
+} & { render(): Render[".mdoc"] };
 "photos.mdoc": {
 	id: "photos.mdoc";
   slug: "photos";
+  body: string;
+  collection: "fragments";
+  data: InferEntrySchema<"fragments">
+} & { render(): Render[".mdoc"] };
+"work-places.mdoc": {
+	id: "work-places.mdoc";
+  slug: "work-places";
   body: string;
   collection: "fragments";
   data: InferEntrySchema<"fragments">
@@ -423,6 +437,13 @@ declare module 'astro:content' {
   collection: "photos";
   data: any
 } & { render(): Render[".mdoc"] };
+"bicycle-2024.mdoc": {
+	id: "bicycle-2024.mdoc";
+  slug: "bicycle-2024";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
 "el-loa-airport-2023.mdoc": {
 	id: "el-loa-airport-2023.mdoc";
   slug: "el-loa-airport-2023";
@@ -433,6 +454,13 @@ declare module 'astro:content' {
 "magdalena-island-2023.mdoc": {
 	id: "magdalena-island-2023.mdoc";
   slug: "magdalena-island-2023";
+  body: string;
+  collection: "photos";
+  data: any
+} & { render(): Render[".mdoc"] };
+"man-in-orange-2024.mdoc": {
+	id: "man-in-orange-2024.mdoc";
+  slug: "man-in-orange-2024";
   body: string;
   collection: "photos";
   data: any

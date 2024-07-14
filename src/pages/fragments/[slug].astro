@@ -40,6 +40,10 @@ const currentFragments = sortedFragments.filter((fragment) => {
   );
 });
 
+const currentFragmentIndex = currentFragments.findIndex(
+  (f) => f.slug === fragment.slug
+);
+
 // Generate static pages
 export async function getStaticPaths() {
   const fragments = await getCollection("fragments");
@@ -61,10 +65,16 @@ export async function getStaticPaths() {
     <h3>{currentMonthName}'s Fragments</h3>
     <ul>
       {
-        currentFragments.map(async (f) => {
+        currentFragments.map(async (f, i) => {
+          const className = i === currentFragmentIndex ? "is-current" : "";
           return (
-            <li>
-              <a href={`/fragments/${f.slug}`}>{f.data.title}</a> <hr />
+            <li class={className}>
+              {i !== currentFragmentIndex ? (
+                <a href={`/fragments/${f.slug}`}>{f.data.title}</a>
+              ) : (
+                <span class="current-title">{f.data.title}</span>
+              )}
+              <hr />
               <em>({f.data.date})</em>
             </li>
           );
