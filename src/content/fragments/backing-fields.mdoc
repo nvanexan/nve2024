@@ -6,7 +6,7 @@ description: >-
 date: '2024-07-25'
 published: true
 ---
-I learned a quick trick this week re how to resolve null reference errors when you add new properties to an existing CosmosDB document class. Let's say you have an existing BaseEntity class that needs two new properties added for CreatedDate and CreatedBy. If you add those properties to your class definition, you'll get null reference errors for your existing data that is missing those properties. But you can fix the issue with backing fields like so...\
+I learned a quick trick this week re how to resolve null reference errors when you add new properties to an existing CosmosDB document class. Let's say you have an existing BaseEntity class that needs two new properties added for CreatedDate and CreatedBy. If you add those properties to your class definition, you'll get null reference errors for your existing data that is missing those properties. But you can fix the issue with backing fields like so...
 
 ```csharp
 public abstract class BaseEntity {
