@@ -24,7 +24,7 @@ const sortedFragments =
     ) ?? [];
 
 // Get the current year and month
-const currentDate = new Date();
+const currentDate = new Date(fragment.data.date);
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth(); // Note: getMonth() returns 0 for January, 1 for February, etc.
 const currentMonthName = currentDate.toLocaleString("default", {
