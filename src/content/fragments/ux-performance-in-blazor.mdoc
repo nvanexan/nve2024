@@ -1,0 +1,18 @@
+---
+title: UX Performance in Blazor
+description: The Honeymoon Is Over
+date: '2024-10-05'
+published: true
+---
+A while back I wrote a longer [article](https://nick.vanexan.ca/posts/blazor-a-review-and-primer-for-ui-devs) summarizing some of my key thoughts approaching Microsoft's [Blazor](https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-8.0) technology as a UI developer who has spent most of his career in the JS / TS ecosystem. The more I've worked with Blazor, the more I've been enjoying the developer experience (DX). But recently, I'm coming across some really poor user experience (UX) outcomes in production, and I'm worried that Blazor is making the wrong trade-offs between DX and UX.
+
+In our project, we're using Blazor server. So all of the user interaction is mediated via signalR. You type, the signal is sent via signalR to the server, the server returns your new state. The problem is that the performance of this architecture can't keep up with the speed of user input entry on the front-end. The user types too fast, or clicks too fast, and a delta emerges between what the user thinks its current state should be and what the server thinks the state should be, resulting in outcomes like laggy typing or caret movements within text fields.
+
+I should say, these experiences are not immediately visible in smaller applications or simple interfaces, and aren't visible when running Blazor server apps locally. But they become visible in prod, when your app is deployed to Azure and is using the Azure signalR service. This is what we've discovered after switching our local instance to use Azure signalR service.
+
+I'm working through this issue now, and running into what seems like a fundamental design flaw. An example from this [GitHub issue](https://github.com/dotnet/aspnetcore/issues/14242).
+
+![](/images/fragments/ux-performance-in-blazor/image.png)
+
+The rub here is in the first paragraph. If the framework is not suited to high frequency events like... typing really fast... I mean what is its use generally? Why make this at all? Of course you can't bend the laws of physics. So why make all user interaction intermediated by signalR?\
+I'm just at the beginning of a journey into fixing some issues on the project I'm on, so this post is admittedly and knowingly spicy. Cooler Nicks will prevail. I'll post some notes on how we resolve this (and we *will* resolve this) when I'm out of my foxhole.
