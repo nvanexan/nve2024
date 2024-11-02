@@ -40,7 +40,7 @@ export default defineMarkdocConfig({
   },
   extends: [
     shiki({
-      experimentalThemes: {
+      themes: {
         dark: "material-theme-darker",
         light: "light-plus",
       },
