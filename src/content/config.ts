@@ -7,7 +7,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     socialImageUrl: z.string().optional(),
-    date: z.string(),
+    date: z.date(),
     published: z.boolean().optional(),
   }),
 });
@@ -17,7 +17,7 @@ const changelogs = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    date: z.string(),
+    date: z.date(),
     published: z.boolean().optional(),
   }),
 });
@@ -27,7 +27,7 @@ const fragments = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    date: z.string(),
+    date: z.date(),
     published: z.boolean().optional(),
   }),
 });

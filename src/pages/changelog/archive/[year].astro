@@ -5,7 +5,7 @@ import ArticleTitle from "../../../components/ArticleTitle.astro";
 import Header from "../../../components/Header.astro";
 
 export function getStaticPaths() {
-  const years = ["2023", "2022", "2021"];
+  const years = ["2024", "2023", "2022", "2021"];
   return years.map((year) => ({ params: { year } }));
 }
 
@@ -14,9 +14,9 @@ const params = Astro.params;
 const changelogs = await getCollection("changelogs");
 const sortedChangelogs = changelogs
   .filter((p) => !!p.data.published)
-  .filter((p) => p.data.date.startsWith(params.year))
+  .filter((p) => p.data.date.getFullYear() === parseInt(params.year))
   .sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
   );
 ---
 

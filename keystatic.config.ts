@@ -2,7 +2,6 @@ import {
   config,
   fields,
   collection,
-  singleton,
   component,
 } from "@keystatic/core";
 

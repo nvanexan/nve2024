@@ -20,7 +20,7 @@ const sortedPhotos =
     ?.filter((p) => !!p.data.published)
     ?.sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        b.data.date.getTime() - a.data.date.getTime()
     ) ?? [];
 
 const currentIndex = sortedPhotos.findIndex((p) => p.slug === slug);
@@ -67,7 +67,7 @@ export async function getStaticPaths() {
                       <span class="current-title">{f.data.title}</span>
                     )}
                     <hr />
-                    <em>({f.data.date})</em>
+                    <em>({f.data.date.toISOString()})</em>
                   </li>
                 );
               })}

@@ -20,11 +20,11 @@ const sortedFragments =
     ?.filter((p) => !!p.data.published)
     ?.sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        b.data.date.getTime() - a.data.date.getTime()
     ) ?? [];
 
 // Get the current year and month
-const currentDate = new Date(fragment.data.date);
+const currentDate = fragment.data.date;
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth(); // Note: getMonth() returns 0 for January, 1 for February, etc.
 const currentMonthName = currentDate.toLocaleString("default", {
@@ -33,7 +33,7 @@ const currentMonthName = currentDate.toLocaleString("default", {
 
 // Filter fragments to include only those from the current year and month
 const currentFragments = sortedFragments.filter((fragment) => {
-  const fragmentDate = new Date(fragment.data.date);
+  const fragmentDate = fragment.data.date;
   return (
     fragmentDate.getFullYear() === currentYear &&
     fragmentDate.getMonth() === currentMonth
@@ -75,7 +75,7 @@ export async function getStaticPaths() {
                 <span class="current-title">{f.data.title}</span>
               )}
               <hr />
-              <em>({f.data.date})</em>
+              <em>({f.data.date.toLocaleDateString("en-ca")})</em>
             </li>
           );
         })
