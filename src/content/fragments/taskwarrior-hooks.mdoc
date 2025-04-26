@@ -1,0 +1,47 @@
+---
+title: Taskwarrior Hooks
+description: How to auto-remove next tags on task completion
+date: 2025-04-25
+published: true
+---
+I use [Taskwarrior ](https://taskwarrior.org/)for task management. One nice feature in Taskwarrior is if you add a "next" tag to a task (+next), it puts it at the top of your active task list in yellow. If you complete the task, however, the tag of "next" remains in the history of the task. This doesn't make sense, as next is a tag that is really only relevant in the context of your working / active tasks, not completed tasks.
+
+Manually removing the next tag before completing a task is a chore, so I wrote a hook to automate it:
+
+```python
+#!/usr/bin/env python3
+import json
+import sys
+
+try:
+    input_stream = sys.stdin.buffer
+except AttributeError:
+    input_stream = sys.stdin
+
+# Read original and modified tasks from stdin
+old = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
+new = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
+
+# If status changed to completed, remove the 'next' tag
+if new.get("status") == "completed" and "tags" in new:
+    if "next" in new["tags"]:
+        new["tags"].remove("next")
+
+# Output the modified task
+print(json.dumps(new))
+
+```
+
+To make use of the hook, save it in a file:
+
+```
+~/.task/hooks/on-modify.remove_next_on_done.py
+```
+
+And don't forget to make the file executable:
+
+```
+chmod +x ~/.task/hooks/on-modify.remove_next_on_done.py
+```
+
+And just like that, the +next tag will be removed automagically when you complete your task.
