@@ -67,7 +67,7 @@ export async function getStaticPaths() {
                       <span class="current-title">{f.data.title}</span>
                     )}
                     <hr />
-                    <em>({f.data.date.toISOString()})</em>
+                    <em>({f.data.date.toLocaleDateString("en-ca")})</em>
                   </li>
                 );
               })}
