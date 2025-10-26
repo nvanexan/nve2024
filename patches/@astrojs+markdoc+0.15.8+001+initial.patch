@@ -1,0 +1,41 @@
+diff --git a/node_modules/@astrojs/markdoc/components/Renderer.astro b/node_modules/@astrojs/markdoc/components/Renderer.astro
+index 2706040..d65127c 100644
+--- a/node_modules/@astrojs/markdoc/components/Renderer.astro
++++ b/node_modules/@astrojs/markdoc/components/Renderer.astro
+@@ -3,6 +3,8 @@
+ import type { Config, RenderableTreeNodes } from '@markdoc/markdoc';
+ import Markdoc from '@markdoc/markdoc';
+ import { ComponentNode, createTreeNode } from './TreeNode.js';
++import MarkdocExtendedParser from '@nvanexan/markdoc-extensions/dist/index.mjs';
++import { extendedNodes } from '@nvanexan/markdoc-extensions';
+ 
+ type Props = {
+ 	config: Config;
+@@ -11,12 +13,25 @@ type Props = {
+ 
+ const { stringifiedAst, config } = Astro.props as Props;
+ 
++const updatedConfig = {
++	...config,
++	nodes: {
++		...config.nodes,
++		...extendedNodes,
++	},
++};
++
+ const ast = Markdoc.Ast.fromJSON(stringifiedAst);
+ // The AST may be an array, and `transform` has overloads for arrays and non-array cases,
+ // However TypeScript seems to struggle to combine both overloads into a single signature.
+ // Also, `transform` returns a promise here but the types don't reflect that.
+-// @ts-expect-error
+-const content = (await Markdoc.transform(ast, config)) as RenderableTreeNodes;
++// const content = (await Markdoc.transform(ast, config)) as RenderableTreeNodes;
++
++const parser = new MarkdocExtendedParser({footnotes: true, highlights: true});
++const result = Array.isArray(ast) ? ast.map(node => parser.parse(node)) : parser.parse(ast);
++const content = Array.isArray(result)
++	? await Promise.all(result.map(node => Markdoc.transform(node, updatedConfig)))
++	: Markdoc.transform(result, updatedConfig);
+ const treeNode = await createTreeNode(content);
+ ---
+ 

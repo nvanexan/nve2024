@@ -18,16 +18,14 @@ const photos = await getCollection("photos");
 const sortedPhotos =
   photos
     ?.filter((p) => !!p.data.published)
-    ?.sort(
-      (a, b) =>
-        b.data.date.getTime() - a.data.date.getTime()
-    ) ?? [];
+    ?.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) ?? [];
 
 const currentIndex = sortedPhotos.findIndex((p) => p.slug === slug);
 
 var currentPhotos = sortedPhotos.slice(0, 10);
 
 // Generate static pages
+export const prerender = true;
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
   return photos.map((photo) => ({ params: { slug: photo.slug } }));

@@ -18,10 +18,7 @@ const fragments = await getCollection("fragments");
 const sortedFragments =
   fragments
     ?.filter((p) => !!p.data.published)
-    ?.sort(
-      (a, b) =>
-        b.data.date.getTime() - a.data.date.getTime()
-    ) ?? [];
+    ?.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) ?? [];
 
 // Get the current year and month
 const currentDate = fragment.data.date;
@@ -45,6 +42,7 @@ const currentFragmentIndex = currentFragments.findIndex(
 );
 
 // Generate static pages
+export const prerender = true;
 export async function getStaticPaths() {
   const fragments = await getCollection("fragments");
   return fragments.map((fragment) => ({ params: { slug: fragment.slug } }));
