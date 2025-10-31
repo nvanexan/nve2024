@@ -4,6 +4,7 @@ import Layout from "../../../layouts/Layout.astro";
 import ArticleTitle from "../../../components/ArticleTitle.astro";
 import Header from "../../../components/Header.astro";
 
+export const prerender = true;
 export function getStaticPaths() {
   const years = ["2024", "2023", "2022", "2021"];
   return years.map((year) => ({ params: { year } }));
@@ -15,9 +16,7 @@ const changelogs = await getCollection("changelogs");
 const sortedChangelogs = changelogs
   .filter((p) => !!p.data.published)
   .filter((p) => p.data.date.getFullYear() === parseInt(params.year))
-  .sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime()
-  );
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Layout title="Changelog" description="Monthly updates + happenings">

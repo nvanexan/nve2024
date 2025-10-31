@@ -60,6 +60,7 @@ export default defineMarkdocConfig({
         "bash",
         "shell",
         "powershell",
+        "python",
         "plaintext",
       ],
     }),

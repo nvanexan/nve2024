@@ -1,27 +1,31 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import Header from '../../components/Header.astro';
-import Spacer from '../../components/Spacer.astro';
-import ArticleTitle from '../../components/ArticleTitle.astro';
+import { getCollection, getEntry } from "astro:content";
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import Header from "../../components/Header.astro";
+import Spacer from "../../components/Spacer.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
 
 const { slug } = Astro.params;
-if (!slug) throw new Error('Slug not found');
-const post = await getEntry('posts', slug);
+if (!slug) throw new Error("Slug not found");
+const post = await getEntry("posts", slug);
 
-if (!post) throw new Error('No post found for this slug');
+if (!post) throw new Error("No post found for this slug");
 const { Content } = await post.render();
 
 // Generate static pages
+export const prerender = true;
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  return posts.map(post => ({ params: { slug: post.slug } }));
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({ params: { slug: post.slug } }));
 }
-
 ---
 
-<BlogPostLayout title={post.data.title} description={post.data.description} socialImageUrl={post.data.socialImageUrl}>
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  socialImageUrl={post.data.socialImageUrl}
+>
   <Header showTitle={true} />
   <ArticleTitle heading={post.data.title} subheading={post.data.description} />
   <Content />
-</Layout>
+</BlogPostLayout>

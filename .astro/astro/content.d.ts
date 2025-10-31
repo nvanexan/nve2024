@@ -434,9 +434,9 @@ declare module 'astro:content' {
   collection: "fragments";
   data: InferEntrySchema<"fragments">
 } & { render(): Render[".mdoc"] };
-"test.mdoc": {
-	id: "test.mdoc";
-  slug: "test";
+"taskwarrior-hooks.mdoc": {
+	id: "taskwarrior-hooks.mdoc";
+  slug: "taskwarrior-hooks";
   body: string;
   collection: "fragments";
   data: InferEntrySchema<"fragments">
@@ -444,6 +444,13 @@ declare module 'astro:content' {
 "the-new-internet.mdoc": {
 	id: "the-new-internet.mdoc";
   slug: "the-new-internet";
+  body: string;
+  collection: "fragments";
+  data: InferEntrySchema<"fragments">
+} & { render(): Render[".mdoc"] };
+"tokyo-focus-tracks.mdoc": {
+	id: "tokyo-focus-tracks.mdoc";
+  slug: "tokyo-focus-tracks";
   body: string;
   collection: "fragments";
   data: InferEntrySchema<"fragments">
@@ -531,13 +538,6 @@ declare module 'astro:content' {
 } & { render(): Render[".mdoc"] };
 };
 "posts": {
-"apollo-eleven.mdoc": {
-	id: "apollo-eleven.mdoc";
-  slug: "apollo-eleven";
-  body: string;
-  collection: "posts";
-  data: InferEntrySchema<"posts">
-} & { render(): Render[".mdoc"] };
 "astro-keystatic-markdoc.mdoc": {
 	id: "astro-keystatic-markdoc.mdoc";
   slug: "astro-keystatic-markdoc";

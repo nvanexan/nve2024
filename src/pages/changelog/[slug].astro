@@ -1,29 +1,33 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import ArticleTitle from '../../components/ArticleTitle.astro';
-import Header from '../../components/Header.astro';
-import Spacer from '../../components/Spacer.astro';
-import BackToLink from '../../components/BackToLink.astro';
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ArticleTitle from "../../components/ArticleTitle.astro";
+import Header from "../../components/Header.astro";
+import Spacer from "../../components/Spacer.astro";
+import BackToLink from "../../components/BackToLink.astro";
 
 const { slug } = Astro.params;
-if (!slug) throw new Error('Slug not found');
-const changelog = await getEntry('changelogs', slug);
+if (!slug) throw new Error("Slug not found");
+const changelog = await getEntry("changelogs", slug);
 
-if (!changelog) throw new Error('No changelog found for this slug');
+if (!changelog) throw new Error("No changelog found for this slug");
 const { Content } = await changelog.render();
 
 // Generate static pages
+export const prerender = true;
 export async function getStaticPaths() {
-  const changelogs = await getCollection('changelogs');
-  return changelogs.map(changelog => ({ params: { slug: changelog.slug } }));
+  const changelogs = await getCollection("changelogs");
+  return changelogs.map((changelog) => ({ params: { slug: changelog.slug } }));
 }
 ---
 
 <Layout title={changelog.data.title} description={changelog.data.description}>
   <Header showTitle={true} />
-  <ArticleTitle heading={changelog.data.title} subheading={changelog.data.description} />
+  <ArticleTitle
+    heading={changelog.data.title}
+    subheading={changelog.data.description}
+  />
   <Content />
   <Spacer />
-  <BackToLink text="Back to Changelog" href="/changelog">
+  <BackToLink text="Back to Changelog" href="/changelog" />
 </Layout>

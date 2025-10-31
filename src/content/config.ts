@@ -40,4 +40,16 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { posts, changelogs, fragments, about };
+const photos = defineCollection({
+  // Type-check frontmatter using a schema
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.date(),
+    published: z.boolean().optional(),
+    orientation: z.enum(["landscape", "portrait"]).optional(),
+    photo: z.string().optional(),
+  }),
+});
+
+export const collections = { posts, changelogs, fragments, about, photos };
