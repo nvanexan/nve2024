@@ -4,12 +4,12 @@ import Layout from "../../layouts/Layout.astro";
 import ArticleTitle from "../../components/ArticleTitle.astro";
 import Header from "../../components/Header.astro";
 
+export const prerender = true;
+
 const changelogs = await getCollection("changelogs");
 const sortedChangelogs = changelogs
   .filter((p) => !!p.data.published)
-  .sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime()
-  )
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 12);
 ---
 

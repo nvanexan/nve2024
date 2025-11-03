@@ -4,14 +4,13 @@ import Layout from "../../layouts/Layout.astro";
 import ArticleTitle from "../../components/ArticleTitle.astro";
 import Header from "../../components/Header.astro";
 
+export const prerender = true;
+
 const fragments = await getCollection("fragments");
 const sortedFragments =
   fragments
     ?.filter((p) => !!p.data.published)
-    ?.sort(
-      (a, b) =>
-        b.data.date.getTime() - a.data.date.getTime()
-    ) ?? [];
+    ?.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) ?? [];
 ---
 
 <Layout title="Fragments" description="Atomic notes, snippets, musings, etc.">

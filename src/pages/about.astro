@@ -1,19 +1,24 @@
 ---
-import { getEntry } from 'astro:content';
-import Header from '../components/Header.astro';
-import ArticleTitle from '../components/ArticleTitle.astro';
-import Contact from '../components/Contact.astro';
-import Layout from '../layouts/Layout.astro';
+import { getEntry } from "astro:content";
+import Header from "../components/Header.astro";
+import ArticleTitle from "../components/ArticleTitle.astro";
+import Contact from "../components/Contact.astro";
+import Layout from "../layouts/Layout.astro";
 
-const about = await getEntry('about', 'content');
+export const prerender = true;
+
+const about = await getEntry("about", "content");
 
 const { Content } = await about.render();
-
 ---
+
 <Layout title="About">
-    <Header showTitle={true} />
-    <ArticleTitle heading={about.data.title} subheading={about.data.description} />
-    <span class="spacer" style="--spacer-y: 5.25;"></span>
-    <Content />
-    <Contact />
+  <Header showTitle={true} />
+  <ArticleTitle
+    heading={about.data.title}
+    subheading={about.data.description}
+  />
+  <span class="spacer" style="--spacer-y: 5.25;"></span>
+  <Content />
+  <Contact />
 </Layout>

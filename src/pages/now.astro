@@ -1,20 +1,21 @@
 ---
-import { getEntry } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import ArticleTitle from '../components/ArticleTitle.astro';
-import Spacer from '../components/Spacer.astro';
-import BackToLink from '../components/BackToLink.astro';
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import ArticleTitle from "../components/ArticleTitle.astro";
 
-const entry = await getEntry('now', 'content');
+export const prerender = true;
+
+const entry = await getEntry("now", "content");
 
 const { Content } = await entry.render();
 ---
 
-
 <Layout title="Now" description={entry.data.description}>
-    <Header showTitle={true} />
-    <ArticleTitle heading={entry.data.title} subheading={entry.data.description} />
-    <Content />
+  <Header showTitle={true} />
+  <ArticleTitle
+    heading={entry.data.title}
+    subheading={entry.data.description}
+  />
+  <Content />
 </Layout>
-  
