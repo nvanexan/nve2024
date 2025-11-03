@@ -4,12 +4,12 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import ArticleTitle from "../components/ArticleTitle.astro";
 
+export const prerender = true;
+
 const posts = await getCollection("posts");
 const sortedPosts = posts
   .filter((p) => !!p.data.published)
-  .sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime()
-  );
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Layout title="Articles" description="Longer form articles, often technical">
