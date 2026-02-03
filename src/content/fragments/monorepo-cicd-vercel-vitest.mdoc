@@ -1,0 +1,27 @@
+---
+title: Monorepo CI/CD with Vercel and Vitest
+description: Per-app coverage reports in a multi-project deployment
+date: 2026-02-03
+published: false
+---
+I recently set up a monorepo with separate apps (server and dashboard) that deploy as distinct Vercel projects from the same repository. Getting per-app test coverage reports in PRs took a bit of wiring, but the result is worth it.
+
+The key is using [vitest-coverage-report-action](https://github.com/davelosert/vitest-coverage-report-action) with a naming suffix for each app. In your GitHub Actions workflow, run coverage for each app separately and give each report a unique name:
+
+```yaml
+- name: Server Coverage
+  uses: davelosert/vitest-coverage-report-action@v2
+  with:
+    name: Server Coverage
+    working-directory: apps/server
+
+- name: Dashboard Coverage
+  uses: davelosert/vitest-coverage-report-action@v2
+  with:
+    name: Dashboard Coverage
+    working-directory: apps/dashboard
+```
+
+Each app gets its own coverage comment on the PR, showing lines, statements, functions, and branches independently. Vercel handles the multi-project side automatically if you configure separate projects pointing to each app's root directory.
+
+The nice outcome: you can see at a glance whether your server changes dropped coverage while your dashboard stays healthy (or vice versa). No more guessing which part of the monorepo a coverage regression came from.
