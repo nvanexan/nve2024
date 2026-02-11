@@ -1,0 +1,15 @@
+---
+title: TIL The Figma MCP OAuth Gap in Cloud Agents
+description: Figma's official MCP server frustrating lack of headless mode
+date: 2026-02-11
+published: true
+---
+Using the Figma Make with the Figma MCP server locally with Claude Code or GitHub Copilot agents is one of the best agentic development workflows I've found. The agent gets real design context: layout, tokens, component hierarchy. And from that it can produce faithful implementations on the first pass instead of making educated guesses.
+
+I wanted the same workflow in GitHub Copilot's cloud coding agent, but was surprised to find Figma's official MCP server doesn't really support it.
+
+Figma's remote MCP server only supports OAuth — an interactive browser sign-in. But cloud agents run headless. No browser, no OAuth.
+
+Third-party MCP servers that wrap the Figma REST API with PAT auth exist as workarounds, but they don't provide the same first-party design context. Specifically, they use the Figma API to get the design information and return it, but there's a gap: the Figma API does not support querying for Figma Make files and their related assets.
+
+I was surprised to learn this today, and find that a frustrating limitation for a product that charges as much as it does.
