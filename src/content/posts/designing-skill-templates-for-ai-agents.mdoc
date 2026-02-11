@@ -1,0 +1,189 @@
+---
+title: Designing Skill Templates for AI Agents
+description: Lessons from building 11 skill templates for Claude Code
+date: 2026-02-05
+published: false
+---
+
+Writing effective instructions for AI coding agents is its own design discipline. After building and iterating on 11 skill templates for Claude Code — covering everything from spec writing to code review to architecture planning — I've landed on a set of patterns that meaningfully change how agents behave. Not tweaks. Structural differences in output quality, reliability, and workflow coherence.
+
+Here's what I've learned.
+
+## Skills are not prompts
+
+A Claude Code skill is a markdown file with YAML frontmatter that defines a reusable workflow an agent can execute. Think of it less like a prompt and more like a runbook — structured instructions that guide an agent through a multi-step process with clear inputs, outputs, and decision points.
+
+```markdown
+---
+name: architect
+description: Creates technical implementation plans for GitHub Issues...
+allowed-tools: Read, Glob, Grep, Write, Bash, EnterPlanMode, mcp__github__*
+---
+
+# Technical Architecture Workflow
+
+Create a technical implementation plan for a GitHub Issue.
+```
+
+The `allowed-tools` field scopes what the agent can do. The description determines when the skill gets invoked. The body defines *how* the work gets done. Each of these surfaces has its own design considerations.
+
+## Third-person descriptions with trigger keywords
+
+Early versions of my skill descriptions used imperative phrasing: "Create a technical implementation plan." This works, but it underperforms for discoverability. When an agent searches for available skills based on a user's natural language request, third-person present-tense descriptions match better.
+
+**Before:**
+
+```
+Create a technical implementation plan for a GitHub Issue.
+```
+
+**After:**
+
+```
+Creates technical implementation plans for GitHub Issues by exploring the
+codebase, designing phased approaches, and opening draft PRs. Use when the
+user wants to plan, architect, or design the implementation for a spec'd issue.
+```
+
+The "Use when..." suffix is the key addition. It encodes the *trigger conditions* — the natural language phrases a user might say that should activate this skill. "I want to plan this issue." "Let's architect the solution." "Can you design the implementation?" All of these now match.
+
+This is keyword engineering. You're writing for a retrieval system, not a human reader.
+
+## Progress checklists as agent guardrails
+
+The single highest-impact pattern I found was adding progress checklists to complex skills. Five of my eleven skills have workflows longer than six steps — architect (9 steps), implement (10 steps), spec (8 steps), consolidate (7 steps), and revert (7 steps). Without explicit tracking, agents lose their place. They skip steps. They repeat work. They hallucinate completion.
+
+A progress checklist looks like this:
+
+```markdown
+## Progress Tracking
+
+Copy this checklist to track your progress:
+
+- [ ] Step 1: Select issue
+- [ ] Step 2: Validate specification
+- [ ] Step 3: Claim issue
+- [ ] Step 4: Create branch, placeholder plan, and draft PR
+- [ ] Step 5: Explore the codebase
+- [ ] Step 6: Enter plan mode and design implementation
+- [ ] Step 7: Update plan file with actual content
+- [ ] Step 8: Present plan for approval
+- [ ] Step 9: Finalize
+```
+
+It's not complex. It's a markdown checklist at the top of the file. But it gives the agent a concrete state-tracking mechanism across conversation turns. Without it, you're relying on the agent's working memory to recall where it is in a nine-step process — and that fails more often than you'd expect.
+
+## Hard gates prevent workflow drift
+
+Some skills have prerequisites. The `/implement` skill requires an approved technical plan. The `/architect` skill requires a properly spec'd issue. Without explicit enforcement, agents will cheerfully attempt to implement code with no plan, or architect a solution for a vague one-liner issue.
+
+Hard gates are explicit validation steps with clear failure messages:
+
+```markdown
+## Hard Gate: Issue Validation
+
+**This skill requires a spec'd issue.** Before proceeding:
+
+1. Get issue number from user or detect from context
+2. Validate the issue has:
+   - A Summary section
+   - Acceptance criteria (at least one)
+   - Status is "Ready" in the project board
+
+If validation fails, inform the user:
+- "This issue doesn't appear to be fully spec'd. Please run /spec first."
+```
+
+The failure message matters as much as the validation. "Please run /spec first" redirects the agent to the correct prerequisite skill rather than leaving it to improvise.
+
+## Feedback loops for quality gates
+
+Two of my skills — `/checkpoint` and `/implement` — include explicit feedback loop instructions:
+
+```markdown
+**Feedback loop:** If any verification step fails, attempt to fix the
+issue and re-run verification before proceeding. Only checkpoint when
+all gates pass.
+```
+
+Without this, agents treat verification as a read-only observation. Tests fail? Note it in the output and move on. Linter complains? Log the warning. The feedback loop instruction converts passive observation into active correction: fail, fix, re-verify, proceed.
+
+This is the difference between an agent that *reports* test failures and one that *fixes* them.
+
+## Workflow ordering matters more than you think
+
+The most instructive refactoring I did was restructuring the `/architect` skill. The original workflow looked like this:
+
+1. Select issue
+2. Validate
+3. **Explore codebase**
+4. **Design plan**
+5. Commit
+6. **Create draft PR**
+7. Update issue
+
+The problem: the draft PR was created at step 6, *after* all the intellectual work was done. No one on the team could see planning was happening until it was essentially finished. And the issue wasn't claimed until late in the process — meaning another developer (or agent) might start working on the same issue.
+
+The restructured workflow:
+
+1. Select issue
+2. Validate
+3. **Claim issue**
+4. **Create branch + draft PR**
+5. Explore codebase
+6. Design plan
+7. Update plan
+8. Present for approval
+9. Finalize
+
+Moving issue claiming and draft PR creation *before* the deep work has three effects:
+
+- **Early visibility.** The team sees a draft PR immediately, signaling that work is in progress.
+- **No duplicate work.** The issue is assigned and moved to "In Progress" before exploration begins.
+- **Progressive disclosure.** The plan file starts with placeholder content and fills in as the agent works.
+
+This is a workflow design insight, not a prompting insight. The instructions to the agent didn't fundamentally change — the *order* changed. And order is a design decision that compounds across a team.
+
+## Extract templates into resource files
+
+Early skill files were long. The `/architect` skill was around 230 lines because it included inline templates for plan files, session logs, and PR bodies. This has two problems: it burns tokens on every invocation, and it makes the skill file harder to read and maintain.
+
+The fix is resource files — separate markdown documents that live alongside the skill:
+
+```
+skills/architect/
+├── SKILL.md
+└── resources/
+    ├── plan-template.md
+    └── session-template.md
+```
+
+The skill references them:
+
+```markdown
+### Step 6: Create the session log
+
+- See [resources/session-template.md](resources/session-template.md)
+  for the full session log format
+```
+
+The agent reads the resource file only when it reaches that step — not at skill load time. This is lazy loading for agent instructions.
+
+## Explicit approval gates for destructive actions
+
+Every skill that touches git or GitHub includes explicit approval gates:
+
+```markdown
+**Ask the user for permission before committing:**
+- "Ready to commit these changes? [Yes / No / Show diff]"
+```
+
+This isn't about safety theater. It's about maintaining user agency in agentic workflows. An agent that pushes code without asking is an agent that gets its permissions revoked. An agent that pauses at the right moments builds trust — and trust is what lets you give it more autonomy over time.
+
+## The meta-lesson
+
+The common thread across all of these patterns is that **skill design is workflow design, not prompt engineering.** The improvements came from structural decisions — ordering, gating, tracking, scoping — not from finding better words. You're designing a process that happens to be executed by an LLM.
+
+If you're building skills for AI coding agents, start with the workflow. Get the steps right. Get the order right. Add gates where things can go wrong. Add checklists where things are complex. Then write the instructions.
+
+The words matter less than the structure.
