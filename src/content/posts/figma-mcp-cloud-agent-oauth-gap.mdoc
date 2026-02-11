@@ -1,16 +1,17 @@
 ---
-title: "The Figma MCP OAuth Gap in Cloud Agents"
-description: "Figma's MCP server is transformative for local agentic development — but OAuth-only auth locks it out of cloud agents entirely."
-date: "2026-02-10"
-published: false
+title: The Figma MCP OAuth Gap in Cloud Agents
+description: >-
+  Figma's MCP server is transformative for local agentic development — but
+  OAuth-only auth locks it out of cloud agents entirely.
+date: 2026-02-10
+published: true
 ---
-
 Using the Figma MCP server locally with Claude Code is one of the best agentic development workflows I've found. The agent gets real design context — layout, tokens, component hierarchy — and produces faithful implementations on the first pass instead of making educated guesses.
 
-So I wanted the same workflow in GitHub Copilot's cloud coding agent. That's when I hit the wall.
+So I wanted the same workflow in GitHub Copilot's cloud coding agent. That's when I hit a frustrating wall.
 
-Figma's remote MCP server only supports OAuth — an interactive browser sign-in. Cloud agents run headless. No browser, no OAuth. The endpoint won't accept personal access tokens via headers either. OAuth or nothing.
+Figma's remote MCP server only supports OAuth — an interactive browser sign-in. Cloud agents run headless. No browser, no OAuth. The endpoint won't accept personal access tokens via headers either. It’s OAuth or nothing.
 
 Third-party MCP servers that wrap the Figma REST API with PAT auth exist as workarounds, but they don't provide the same first-party design context. For the gap to close, either Figma needs to support PAT/API key auth on their MCP endpoint, or cloud agent runtimes need to support OAuth flows.
 
-Both are actively requested. Neither is available today. The distance between what's possible locally and what's possible in the cloud shouldn't be this wide — especially for the protocol designed to bridge exactly this kind of tool integration.
+Both are actively requested. Neither is available today. The distance between what's possible locally and what's possible in the cloud shouldn't be this wide — especially for the protocol designed to bridge exactly this kind of tool integration. And especially when you’re paying a fair bit for a Figma license.
