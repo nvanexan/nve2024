@@ -1,0 +1,19 @@
+---
+title: The Implement Trap in GitHub Coding Agents
+description: Why GitHub's coding agents ignore your custom workflow instructions and how to fix it
+date: 2026-02-11
+published: false
+---
+When you assign an issue to GitHub Copilot's coding agent, the system wraps your issue content inside a standard template that says *"Implement the necessary changes to the repository so that the requirements specified in the problem_statement are met."* Your issue body, including any `<agent_instructions>`, gets nested inside that frame.
+
+I hit this today. My `<agent_instructions>` said "after creating the initial PR, run [x] skill" instead of jumping straight to code. The agent ignored it. It prioritized the outer "Implement" directive and went straight to coding.
+
+When I asked the agent to analyze what went wrong, it was clear: two competing instructions, and the outer frame won. The `<agent_instructions>` tag was *inside* the problem statement, so it competed with the outer directive rather than overriding it. The agent's built-in "Steps to Follow" (explore → test → implement) further reinforced the implementation bias.
+
+The fix is to make your `<agent_instructions>` loud enough to break through the outer frame. The formula:
+
+```
+STOP + [what NOT to do] + [exact skill to invoke] + [how to invoke it] + [acknowledge the conflict]
+```
+
+The key insight: brevity and directness win under competing instruction pressure. Start with STOP, name the skill explicitly, list forbidden actions, and acknowledge the conflict head-on.
