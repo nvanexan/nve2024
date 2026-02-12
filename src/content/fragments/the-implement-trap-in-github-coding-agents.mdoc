@@ -1,10 +1,12 @@
 ---
 title: The Implement Trap in GitHub Coding Agents
-description: Why GitHub's coding agents ignore your custom workflow instructions and how to fix it
-date: 2026-02-11
-published: false
+description: >-
+  Why GitHub's coding agents ignore your custom workflow instructions and how to
+  fix it
+date: 2026-02-12
+published: true
 ---
-When you assign an issue to GitHub Copilot's coding agent, the system wraps your issue content inside a standard template that says *"Implement the necessary changes to the repository so that the requirements specified in the problem_statement are met."* Your issue body, including any `<agent_instructions>`, gets nested inside that frame.
+When you assign an issue to GitHub Copilot's coding agent, the system wraps your issue content inside a standard template that says *"Implement the necessary changes to the repository so that the requirements specified in the problem\_statement are met."* Your issue body, including any `<agent_instructions>`, gets nested inside that frame.
 
 I hit this today. My `<agent_instructions>` said "after creating the initial PR, run [x] skill" instead of jumping straight to code. The agent ignored it. It prioritized the outer "Implement" directive and went straight to coding.
 
