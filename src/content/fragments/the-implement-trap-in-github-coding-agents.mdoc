@@ -12,10 +12,12 @@ I hit this today. My `<agent_instructions>` said "after creating the initial PR,
 
 When I asked the agent to analyze what went wrong, it was clear: two competing instructions, and the outer frame won. The `<agent_instructions>` tag was *inside* the problem statement, so it competed with the outer directive rather than overriding it. The agent's built-in "Steps to Follow" (explore → test → implement) further reinforced the implementation bias.
 
-The fix is to make your `<agent_instructions>` loud enough to break through the outer frame. The formula:
+One fix is to make your `<agent_instructions>` loud enough to break through the outer frame. The formula:
 
 ```
 STOP + [what NOT to do] + [exact skill to invoke] + [how to invoke it] + [acknowledge the conflict]
 ```
 
 The key insight: brevity and directness win under competing instruction pressure. Start with STOP, name the skill explicitly, list forbidden actions, and acknowledge the conflict head-on.
+
+But a fair warning: this doesn't always work. And if you reliably need something to work the way you intend, a better solution may be to spin up your own agents (leveraging the various SDKs) inside of GitHub Actions. You can dispatch your instructions to them, where they won't have the weight of pre-encoded GitHub platform instructions wrapping them.
